@@ -1,0 +1,73 @@
+body { word-break: break-all }
+body .preloaderClass {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+header{ position: fixed }
+.table { margin-bottom: 0!important }
+table { min-width: 100% }
+table tr { cursor: pointer }
+table thead tr{ cursor: inherit }
+table td.tdDescription{ width: 24% }
+#th-Comments{ width: 400px }
+.busy-tr{ background-color: #d9534f }
+.free-tr{ background-color: #5cb85c }
+.modal-dialog{ width: 506px!important }
+.modal-dialog.history{ width: 1200px!important }
+form#form div.input-group{ margin: 10px }
+form#form button{ margin-right: 5px }
+.input-group{ margin-bottom: 8px }
+.modal-content .input-group{ border-color: red!important }
+.checkDeleteSource{ width:162px!important }
+.checkContent{ padding: 10px }
+.myactive {
+    z-index: 1;
+    background-color: #f0ad4e!important;
+}
+.btn-elvees{
+    position: absolute;
+    right: 25px;
+    top: 3px;
+}
+
+.parentForm {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+.blockForm {
+    background-color: #27aae1;
+    padding:20px;
+    width: 350px;
+    height: 150px;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+#historyError{
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+#errorCheckUser{
+    margin-top:4px;
+    margin-right: 25px;
+    float:right;
+    color: #d9534f;
+    font-weight: bold;
+}
+#addSourceError{
+  color: #d9534f;
+  margin-left: 10px;
+  font-weight: bold;
+}
