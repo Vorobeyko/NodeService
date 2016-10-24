@@ -63,12 +63,14 @@ public class EntityOperation implements IDBOperation{
 //          setHistory(cameras,session);
 
             _log.info("Обновление источника с IP-адресом " + cameras.getSourceIp() + " произошло успешно");
+            return "success";// Все удачно добавлено, возвращаем success
         } catch (NullPointerException e){
             _log.error("Некорректно введен один из параметров " + e);
+            return "error";//Сгенерирована ошибка, возвращаем error
         } catch (NamingException e) {
             e.printStackTrace();
+            return "error";//Сгенерирована ошибка, возвращаем error
         }
-        return "";
     }
 
     /**
