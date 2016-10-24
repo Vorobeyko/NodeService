@@ -119,7 +119,12 @@ public class StartApplication {
     public void updateSource(@RequestBody  Cameras cameras,
                              @CookieValue (value = "username") String username,
                              HttpServletResponse response) {
-        String updateSource = entityOperation.updateSource(cameras, username);
+        String updateSource = null;
+        if (cameras.getOwnBy() == null || cameras.getOwnBy().equals("")) {
+            updateSource = entityOperation.updateSource(cameras, username);
+        } else {
+            updateSource = entityOperation.updateSource(cameras, "");
+        }
         operationResponse(updateSource, response);
     }
 

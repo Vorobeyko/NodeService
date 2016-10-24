@@ -47,11 +47,13 @@ public class EntityOperation implements IDBOperation{
             String stringSQLQuery =
                 String.format(
                     "UPDATE sourceinfo " +
-                                    "SET SourceModel='%s', SourceDescription='%s',  Comments='%s', DueData=%s",
-                    cameras.getSourceModel(),
-                    cameras.getSourceDescription(),
-                    cameras.getComments(),
-                    getStringDueData(cameras.getDueData())
+                            "SET SourceModel='%s', SourceDescription='%s', OwnBy='%s',  Comments='%s', DueData=%s, State='%s'",
+                        cameras.getSourceModel(),
+                        cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "\'\'",
+                        getStringOwnBy(cameras.getDueData(), authorizedUser),
+                        cameras.getComments() != null ? cameras.getComments() : "\'\'",
+                        getStringDueData(cameras.getDueData()),
+                        getStringState(cameras.getDueData())
                     );
             stringSQLQuery += " WHERE SourceIp=\'" + cameras.getSourceIp() + "\'";
             _log.info(stringSQLQuery);
@@ -63,6 +65,8 @@ public class EntityOperation implements IDBOperation{
             _log.info("Обновление источника с IP-адресом " + cameras.getSourceIp() + " произошло успешно");
         } catch (NullPointerException e){
             _log.error("Некорректно введен один из параметров " + e);
+        } catch (NamingException e) {
+            e.printStackTrace();
         }
         return "";
     }
@@ -174,12 +178,13 @@ public class EntityOperation implements IDBOperation{
      */
     private String getStringOwnBy(Date DueData, String user) throws NamingException {
         try {
-            if (DueData != null || !user.equals("admin")) {
+            if (DueData != null) {
+                if (user.equals("admin")) {
+                    return "admin";
+                }
                 ActiveDirectory ad = new ActiveDirectory();
                 ad.setLDAPConnection();
                 return ad.getNameUser(user);
-            } else if (user.equals("admin")) {
-                return "admin";
             }
         } catch (NullPointerException e){
             _log.error("Произошла ошибка в получении пользователя, вероятно пользователь зашел под логином admin");

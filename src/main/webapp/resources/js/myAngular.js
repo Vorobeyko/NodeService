@@ -62,7 +62,7 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
  	}
  	$scope.updateSource = function(){
  		console.log(getFormInput($scope));
- 		// POSTRequest('/updateSource', getFormInput($scope), $http);
+ 		POSTRequest('/updateSource', getFormInput($scope), $http);
  	}
  	function getFormInput($scope){
 		var sourceInfo = {
@@ -91,7 +91,7 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 							console.log("Код ошибки " + response.status + " - устройство уже добавлено в БД.");
 						}
 						if(response.status == 602 || response.status == 603)
-							$scope.addSourceError = "При добавлении источника произошла ошибка с кодом " + response.status;
+							$scope.addSourceError = "При добавлении\\обновлении источника произошла ошибка с кодом " + response.status;
 				}
 			);
 	}
