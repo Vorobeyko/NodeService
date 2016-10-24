@@ -62,7 +62,7 @@
                                 <td id="td_3" class="tdDescription">{{sourceInfo.sourceDescription}}</td>
                                 <td id="td_4">{{sourceInfo.ownBy}}</td>
                                 <td id="td_5">{{sourceInfo.comments}}</td>
-                                <td id="due-data">{{sourceInfo.dueData| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td id="due-data">{{sourceInfo.dueData| date:'yyyy-MM-dd HH:mm:ss   '}}</td>
                                 <td id="td-state">{{sourceInfo.state}}</td>
                             </tr>
                     </tbody>

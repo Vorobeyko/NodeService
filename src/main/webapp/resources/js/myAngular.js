@@ -1,8 +1,6 @@
 var loginAuth = angular.module('LoginPage',[]);
 var welcomePage = angular.module('WelcomePage',[]);
 
-
-
 loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope, $http, $window) {
 	$scope.checkUsers = function(){
 		var loginInput = {
@@ -22,6 +20,7 @@ loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope
 			);
 		};
 }]);
+
 welcomePage.controller('WelcomePageBody', ['$scope','$rootScope', '$timeout','$http', function($scope, $rootScope, $timeout, $http){
 	angular.element(document).ready(function () {
 		$http({
@@ -35,6 +34,7 @@ welcomePage.controller('WelcomePageBody', ['$scope','$rootScope', '$timeout','$h
 	});
 
 	$scope.showDialogWithSourceInfo = function(){
+		datetime();
 		if ($('#serviceNote').find('.myactive')) {
 			var selectedNote = $("#selectTr tr.myactive td");
 			$scope.sources = {
@@ -46,7 +46,15 @@ welcomePage.controller('WelcomePageBody', ['$scope','$rootScope', '$timeout','$h
 			}
 		}
 	}
+	function datetime(startTime){
+			jQuery('#datetimepicker').datetimepicker({
+					format: "Y-m-d H:i:s",
+					startDate:startTime,
+					step: 30
+			});
+	}
 }])
+
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
 	$scope.regexSourceIP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 	$scope.addSource = function() {
