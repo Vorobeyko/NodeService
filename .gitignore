@@ -1,0 +1,6 @@
+$ cat .gitignore
+.idea/
+out/
+target/
+*.log
+*.properties
