@@ -56,11 +56,6 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
  		console.log(getFormInput($scope));
  		// POSTRequest('/updateSource', getFormInput($scope), $http);
  	}
-	// $scope.disabledSourceIp = function (){
-	// 	if ((/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/).test($scope.sources.sourceIP))
-	// 	 $scope.disabled = true
-	// 	else $scope.disabled = false
-	// }
  	function getFormInput($scope){
 		var sourceInfo = {
 			sourceIp: $scope.sources.sourceIP,

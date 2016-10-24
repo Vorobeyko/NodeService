@@ -1,6 +1,6 @@
 package com.nodeservice.AD;
 
-//import com.nodeservice.Configuration.Properties;
+import com.nodeservice.Configuration.Properties;
 import javax.naming.AuthenticationNotSupportedException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -10,6 +10,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import java.util.Hashtable;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ public class ActiveDirectory {
 
     public void setLDAPConnection (){
         try {
-//            this.myProperties = Properties.env;
+            this.myProperties = Properties.env;
             ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY,myProperties.getProperty("INITIAL_CONTEXT_FACTORY"));
             ldapEnv.put(Context.PROVIDER_URL, myProperties.getProperty("PROVIDER_URL"));
             ldapEnv.put(Context.SECURITY_AUTHENTICATION, myProperties.getProperty("SECURITY_AUTHENTICATION"));
