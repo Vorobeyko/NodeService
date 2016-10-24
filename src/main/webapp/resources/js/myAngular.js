@@ -61,9 +61,14 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 		POSTRequest('/addSource', getFormInput($scope), $http);
  	}
  	$scope.updateSource = function(){
- 		console.log(getFormInput($scope));
  		POSTRequest('/updateSource', getFormInput($scope), $http);
  	}
+	$scope.deleteSource = function(){
+		POSTRequest('/deleteSource', getFormInput($scope), $http);
+	}
+	$scope.showCheckDeleteSource = function(){
+		$('#checkDeleteSource').modal('show')
+	}
  	function getFormInput($scope){
 		var sourceInfo = {
 			sourceIp: $scope.sources.sourceIP,

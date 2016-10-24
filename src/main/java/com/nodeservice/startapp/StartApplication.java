@@ -128,6 +128,15 @@ public class StartApplication {
         operationResponse(updateSource, response);
     }
 
+    @RequestMapping(value = "/deleteSource",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void deleteSource(@RequestBody  Cameras cameras,
+                          @CookieValue (value = "username") String username,
+                          HttpServletResponse response) {
+        entityOperation.deleteSource(cameras);
+    }
+
     private void operationResponse(String operation, HttpServletResponse response){
         if (operation.equals("success")) response.setStatus(HttpServletResponse.SC_OK); //Код 200 - Устройство успещно обновлено
         else if (operation.equals("failed"))response.setStatus(601); //Код ошибки 601 - Устройство уже добавлено в БД

@@ -138,8 +138,17 @@ public class EntityOperation implements IDBOperation{
     }
 
     @Override
-    public void deleteSource() {
-
+    public void deleteSource(Cameras cameras) {
+        Session session = sessionFactory.getCurrentSession();
+        String stringSQLQuery = String.format(
+                "UPDATE sourceinfo " +
+                        "SET deletedSource=b'1' " +
+                        "WHERE SourceIp='%s'",
+                cameras.getSourceIp()
+        );
+        _log.info(stringSQLQuery);
+        SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
+        sqlQuery.executeUpdate();
     }
 
     @Override

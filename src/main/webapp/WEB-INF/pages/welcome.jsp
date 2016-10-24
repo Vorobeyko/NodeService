@@ -127,8 +127,10 @@
                       ng-click="updateSource()">
                         <span class="glyphicon glyphicon-refresh" style="margin-right: 5px;" aria-hidden="true"></span>Update source
                     </button>
-                    <div  class="btn btn-danger show-modal" id="delete" data-toggle="modal" data-target="#checkDeleteSource"
-                      ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid">
+                    <%-- data-toggle="modal" data-target="#checkDeleteSource" --%>
+                    <div  class="btn btn-danger show-modal" id="delete"
+                      ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid"
+                      ng-click="(sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid) ? null : showCheckDeleteSource()">
                         <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Delete source
                     </div>
                     <div id="close" class="btn btn-default" style="margin-left: 5px;"  data-dismiss="modal">
@@ -144,7 +146,7 @@
                                 <div>
                                     <p style="text-align: center">Are you sure?</p>
                                 </div>
-                                <button type="submit" class="btn btn-danger" name="delete" value="delete">
+                                <button type="submit" class="btn btn-danger" name="delete" ng-click="deleteSource()">
                                     <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Yes
                                 </button>
                                 <div id="close" class="btn btn-default" onclick="$('#checkDeleteSource').modal('hide')">

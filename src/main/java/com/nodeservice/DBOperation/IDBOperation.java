@@ -15,7 +15,7 @@ public interface IDBOperation {
 
     String addSource(Cameras cameras, String authorizedUser);
 
-    void deleteSource();
+    void deleteSource(Cameras cameras);
 
     List<Cameras> selectSourceNotDeleted();
 }
