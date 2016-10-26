@@ -57,7 +57,7 @@
                     <tbody id="serviceNote" >
                             <tr name="data"
                               ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
-                              ng-repeat="sourceInfo in sourcesInfo" ns-hover-note click-note>
+                              ng-repeat="sourceInfo in sourcesInfo | orderBy:'sourceIp' " ns-hover-note click-note>
                                 <td id="td_1"><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
                                 <td id="td_2">{{sourceInfo.sourceModel}}</td>
                                 <td id="td_3" class="tdDescription">{{sourceInfo.sourceDescription}}</td>
