@@ -6,13 +6,13 @@
   ng-app="LoginPage">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="resources/image/favicon.ico">
     <link rel="stylesheet" href="/resources/css/style.css">
     <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script async src="/resources/jquery/jquery.js"></script>
     <script src="<c:url value="/resources/js/myAngular.js"/>"></script>
     <script async src="/resources/bootstrap/js/bootstrap.js"></script>
-    <script async src="/resources/script.js"></script>
     <meta charset="UTF-8">
     <title>Login</title>
 </head>

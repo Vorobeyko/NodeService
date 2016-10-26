@@ -1,5 +1,9 @@
 package com.nodeservice.instance;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,15 +11,26 @@ import java.util.Date;
  * Created by avorobey on 13.08.2016.
  * Сущность для операции с таблицей history
  */
-
+@Entity
+@Table(name = "history")
 public class History implements Serializable {
+
+    @Id
+    @Column(name = "ID")
     private Integer ID;
+    @Column(name = "LastUpdated")
     private Date lastUpdated;
+    @Column(name = "SourceIp")
     private String sourceIp;
+    @Column(name = "SourceModel")
     private String sourceModel;
+    @Column(name = "SourceDescription")
     private String sourceDescription;
+    @Column(name = "OwnBy")
     private String ownBy;
+    @Column(name = "Comments")
     private String comments;
+    @Column(name = "DueData")
     private Date dueData;
 
     public void setID(Integer ID) {

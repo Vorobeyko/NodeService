@@ -5,6 +5,7 @@
   ng-app="WelcomePage">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="resources/image/favicon.ico">
     <link rel="stylesheet" href="resources/css/style.css">
     <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="resources/jquery/jquery.datetimepicker.css" />
@@ -18,7 +19,6 @@
     <script src="resources/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="<c:url value="/resources/js/myAngular.js"/>"></script>
-        <script src="resources/script.js"></script>
     <title>Nodes Page Java</title>
 </head>
 <body
@@ -29,7 +29,8 @@
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">PTZ</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Stationary</a></li>
-    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal" onclick="showHistory($('#selectTr tr.myactive td:eq(0)').text())" data-toggle="modal" data-target="#historyModal" style="right: 70px" >
+    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal"  data-toggle="modal" data-target="#historyModal" style="right: 70px"
+      ng-click="showHistory()">
         <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
     </button>
     <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees" data-toggle="modal" data-target="#myModal" id="button"
@@ -62,7 +63,7 @@
                                 <td id="td_3" class="tdDescription">{{sourceInfo.sourceDescription}}</td>
                                 <td id="td_4">{{sourceInfo.ownBy}}</td>
                                 <td id="td_5">{{sourceInfo.comments}}</td>
-                                <td id="due-data">{{sourceInfo.dueData| date:'yyyy-MM-dd HH:mm:ss   '}}</td>
+                                <td id="due-data">{{sourceInfo.dueData| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                 <td id="td-state">{{sourceInfo.state}}</td>
                             </tr>
                     </tbody>
@@ -167,6 +168,15 @@
                 <div>
                     <table class="table table-bordered" id="selectTr">
                         <tbody id="historyTable">
+                          <tr name="data"
+                            ng-repeat="history in sourceHistory">
+                              <td>{{history.sourceIp}}</a></td>
+                              <td>{{history.sourceModel}}</td>
+                              <td class="tdDescription">{{history.sourceDescription}}</td>
+                              <td>{{history.ownBy}}</td>
+                              <td>{{history.comments}}</td>
+                              <td>{{history.dueData| date:'yyyy-MM-dd HH:mm:ss   '}}</td>
+                          </tr>
                         </tbody>
                     </table>
                     <p id="historyError"></p>

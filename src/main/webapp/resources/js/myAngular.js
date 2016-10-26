@@ -3,9 +3,7 @@ var welcomePage = angular.module('WelcomePage',[]);
 
 loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope, $http, $window) {
 	$scope.checkUsers = function(){
-		var loginInput = {
-				login : $scope.login
-		};
+		var loginInput = { login : $scope.login };
 		$http({
 			method:'POST',
 			url:'/check',
@@ -13,25 +11,46 @@ loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope
 		}).then(function successCallback(response) {
 						$window.location.href = '/welcome';
 					}, function errorCallback(response) {
-						if(response.status == 412){
-							$scope.loginError = "Введеный логин не найден.";
-						}
+						if(response.status == 412) $scope.loginError = "Введеный логин не найден.";
 				}
 			);
 		};
 }]);
 
-welcomePage.controller('WelcomePageBody', ['$scope','$rootScope', '$timeout','$http', function($scope, $rootScope, $timeout, $http){
+welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', function($scope, $interval, $http){
 	angular.element(document).ready(function () {
 		$http({
 		 method:'GET',
 		 url:'/getNote'
 	 	}).then(function successCallback(response) {
 		 $scope.sourcesInfo = response.data;
-		}, function errorCallback(response) {
-		 console.log("error");
-		});
+		}, function errorCallback(response) {});
+
+		$interval(callAtInterval, 10000);
+
+		function callAtInterval() {
+	        var tdDueData = document.querySelectorAll("td#due-data");
+	        for(i = 0; i < tdDueData.length; i++){
+	            if (tdDueData[i].innerHTML != "")
+	                if(new Date(tdDueData[i].innerHTML) < new Date()) document.location.reload();
+					}
+		}
 	});
+
+	$scope.showHistory = function(){
+		if ($('#serviceNote').find('.myactive')) {
+			var selectedNote = $("#selectTr tr.myactive td");
+			var sourceIp = selectedNote.eq(0).text()
+			$http({
+			 method:'POST',
+			 url:'/getHistory',
+			 data: sourceIp
+			}).then(function successCallback(response) {
+			  $scope.sourceHistory = response.data;
+			}, function errorCallback(response) {});
+		}
+		$scope.sourceHistory = null;
+	}
 
 	$scope.showDialogWithSourceInfo = function(){
 		datetime();
@@ -55,20 +74,30 @@ welcomePage.controller('WelcomePageBody', ['$scope','$rootScope', '$timeout','$h
 	}
 }])
 
+// .directive('busyNode',['$temiout', function(){
+// 	return {
+// 		link: function(scope, element){
+// 			$timeout(callAtTimeout, 3000);
+// 			function() {
+// 				if (element.hasClass('busyNode'))
+// 							console.log('Yes');
+// 				else {
+// 							console.log('No');
+// 					}
+// 			}
+//
+// 		}
+// 	}
+// }])
+
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
 	$scope.regexSourceIP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
-	$scope.addSource = function() {
-		POSTRequest('/addSource', getFormInput($scope), $http);
- 	}
- 	$scope.updateSource = function(){
- 		POSTRequest('/updateSource', getFormInput($scope), $http);
- 	}
-	$scope.deleteSource = function(){
-		POSTRequest('/deleteSource', getFormInput($scope), $http);
-	}
-	$scope.showCheckDeleteSource = function(){
-		$('#checkDeleteSource').modal('show')
-	}
+
+	$scope.addSource = function() { POSTRequest('/addSource', getFormInput($scope), $http) }
+ 	$scope.updateSource = function(){ POSTRequest('/updateSource', getFormInput($scope), $http) }
+	$scope.deleteSource = function(){ POSTRequest('/deleteSource', getFormInput($scope), $http)	}
+
+	$scope.showCheckDeleteSource = function(){ $('#checkDeleteSource').modal('show') }
  	function getFormInput($scope){
 		var sourceInfo = {
 			sourceIp: $scope.sources.sourceIP,
@@ -76,9 +105,9 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 			sourceDescription: $scope.sources.sourceDescription,
 			comments: $scope.sources.comments
 		}
-		if ($scope.isReserv){
+		if ($scope.isReserv)
 			sourceInfo.dueData = $scope.sources.dueData;
-		}
+
 		return sourceInfo;
  	}
 
@@ -88,7 +117,6 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 			url:url,
 			data: sourceInfo
 		}).then(function successCallback(response) {
-							console.log("success");
 							$window.location.href = '/welcome';
 					}, function errorCallback(response) {
 						if(response.status == 601){

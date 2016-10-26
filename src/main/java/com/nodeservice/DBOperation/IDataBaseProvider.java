@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by avorobey on 27.09.2016.
  */
-public interface IDBOperation {
+public interface IDataBaseProvider {
 
     void getAll();
 
@@ -18,4 +18,7 @@ public interface IDBOperation {
     void deleteSource(Cameras cameras);
 
     List<Cameras> selectSourceNotDeleted();
+
+    List getHistory(String item);
+
 }
