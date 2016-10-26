@@ -38,9 +38,15 @@ welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', functi
 	});
 
 	$scope.showHistory = function(){
-		if ($('#serviceNote').find('.myactive')) {
+		$('#historyModal').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
+		$scope.historySelectedSource = "Источник не выбран.";
+		if ($('#serviceNote').find('.myactive').length != 0) {
 			var selectedNote = $("#selectTr tr.myactive td");
 			var sourceIp = selectedNote.eq(0).text()
+			$scope.historySelectedSource = sourceIp;
 			$http({
 			 method:'POST',
 			 url:'/getHistory',
@@ -52,8 +58,16 @@ welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', functi
 		$scope.sourceHistory = null;
 	}
 
+	$scope.closeHistoryModal = function(){
+		$('#historyModal').modal('hide')
+	}
+
 	$scope.showDialogWithSourceInfo = function(){
 		datetime();
+		$('#myModal').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
 		if ($('#serviceNote').find('.myactive')) {
 			var selectedNote = $("#selectTr tr.myactive td");
 			$scope.sources = {
@@ -65,6 +79,7 @@ welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', functi
 			}
 		}
 	}
+
 	function datetime(startTime){
 			jQuery('#datetimepicker').datetimepicker({
 					format: "Y-m-d H:i:s",
@@ -74,22 +89,6 @@ welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', functi
 	}
 }])
 
-// .directive('busyNode',['$temiout', function(){
-// 	return {
-// 		link: function(scope, element){
-// 			$timeout(callAtTimeout, 3000);
-// 			function() {
-// 				if (element.hasClass('busyNode'))
-// 							console.log('Yes');
-// 				else {
-// 							console.log('No');
-// 					}
-// 			}
-//
-// 		}
-// 	}
-// }])
-
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
 	$scope.regexSourceIP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 
@@ -97,7 +96,12 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
  	$scope.updateSource = function(){ POSTRequest('/updateSource', getFormInput($scope), $http) }
 	$scope.deleteSource = function(){ POSTRequest('/deleteSource', getFormInput($scope), $http)	}
 
-	$scope.showCheckDeleteSource = function(){ $('#checkDeleteSource').modal('show') }
+	$scope.showCheckDeleteSource = function(){
+		$('#checkDeleteSource').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
+	}
  	function getFormInput($scope){
 		var sourceInfo = {
 			sourceIp: $scope.sources.sourceIP,
@@ -105,11 +109,15 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 			sourceDescription: $scope.sources.sourceDescription,
 			comments: $scope.sources.comments
 		}
-		if ($scope.isReserv)
+		if ($scope.isReserv){
 			sourceInfo.dueData = $scope.sources.dueData;
-
+		}
 		return sourceInfo;
  	}
+	$scope.closeSourceInfoModal = function(){
+		$('#myModal').modal('hide');
+		$scope.isReserv = false;;
+	}
 
  	function POSTRequest(url, sourceInfo, $http){
 		$http({

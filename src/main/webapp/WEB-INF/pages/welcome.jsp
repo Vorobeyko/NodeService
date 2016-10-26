@@ -29,11 +29,11 @@
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">PTZ</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Stationary</a></li>
-    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal"  data-toggle="modal" data-target="#historyModal" style="right: 70px"
+    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal" style="right: 70px"
       ng-click="showHistory()">
         <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
     </button>
-    <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees" data-toggle="modal" data-target="#myModal" id="button"
+    <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees"  id="button"
       ng-click="showDialogWithSourceInfo()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </button>
@@ -134,8 +134,8 @@
                       ng-click="(sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid) ? null : showCheckDeleteSource()">
                         <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Delete source
                     </div>
-                    <div id="close" class="btn btn-default" style="margin-left: 5px;"  data-dismiss="modal">
-                        <span class="glyphicon glyphicon-remove" style="margin-right: 5px;" aria-hidden="true"></span>Close
+                    <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal()"">
+                        <span class="glyphicon glyphicon-remove" " style="margin-right: 5px;" aria-hidden="true"></span>Close
                     </div>
                 </div>
                 <p id="addSourceError">{{addSourceError}}</p>
@@ -164,6 +164,10 @@
 <div class="modal fade " id="historyModal" tabindex="-1" role="dialog" aria-labelledby="checkDeleted">
     <div class="modal-dialog history">
         <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" ng-click="closeHistoryModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">История для выбранного источника: {{historySelectedSource}}</h4>
+          </div>
             <div role="tabpanel" class="tab-pane active" id="home" style="    margin: 10px;">
                 <div>
                     <table class="table table-bordered" id="selectTr">
