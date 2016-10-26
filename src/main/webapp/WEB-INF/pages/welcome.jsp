@@ -13,7 +13,6 @@
     <script src="resources/jquery/jquery.js"></script>
     <script src="resources/jquery/jquery.tablesorter.js"></script>
     <script src="resources/jquery/jquery.metadata.js"></script>
-    <script src="resources/datetimeformat.js"></script>
     <script src="resources/jquery/jquery.datetimepicker.full.js"></script>
     <script src="resources/jquery/jquery.datetimepicker.js"></script>
     <script src="resources/bootstrap/js/bootstrap.min.js"></script>
