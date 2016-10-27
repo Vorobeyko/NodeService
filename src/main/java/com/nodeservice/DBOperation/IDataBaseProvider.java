@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface IDataBaseProvider {
 
-    void getAll();
-
     String updateSource(Cameras cameras, String authorizedUser);
 
     String addSource(Cameras cameras, String authorizedUser);

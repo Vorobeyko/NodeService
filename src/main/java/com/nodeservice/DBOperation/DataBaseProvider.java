@@ -40,14 +40,6 @@ public class DataBaseProvider implements IDataBaseProvider {
 
     /**
      *
-     */
-    @Override
-    public void getAll(){
-        _log.info("Session open: " + sessionFactory);
-    }
-
-    /**
-     *
      * @param cameras
      * @param authorizedUser
      * @return
@@ -59,15 +51,16 @@ public class DataBaseProvider implements IDataBaseProvider {
             String stringSQLQuery =
                 String.format(
                     "UPDATE sourceinfo " +
-                            "SET SourceModel='%s', SourceDescription='%s', OwnBy='%s',  Comments='%s', DueData=%s, State='%s'",
+                            "SET SourceModel='%s', SourceDescription='%s', OwnBy='%s',  Comments='%s', DueData=%s, State='%s'" +
+                            " WHERE SourceIp='%s'",
                         cameras.getSourceModel(),
                         cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "\'\'",
                         getStringOwnBy(cameras.getDueData(), authorizedUser),
                         cameras.getComments() != null ? cameras.getComments() : "\'\'",
                         getStringDueData(cameras.getDueData()),
-                        getStringState(cameras.getDueData())
+                        getStringState(cameras.getDueData()),
+                        cameras.getSourceIp()
                     );
-            stringSQLQuery += " WHERE SourceIp=\'" + cameras.getSourceIp() + "\'";
             _log.info(stringSQLQuery);
             SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
             sqlQuery.executeUpdate();
@@ -115,7 +108,8 @@ public class DataBaseProvider implements IDataBaseProvider {
             }
 
             if (!existNote){
-                String addSourceSQL = String.format("INSERT INTO sourceinfo (SourceId, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData, State, DeletedSource) " +
+                String addSourceSQL = String.format(
+                        "INSERT INTO sourceinfo (SourceId, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData, State, DeletedSource) " +
                                 "VALUES ('%s','%s','%s','%s','%s','%s',%s,'%s',%s)",
                         count+1,
                         cameras.getSourceIp(),
@@ -204,8 +198,9 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @param session
      */
     public void setHistory (Cameras cameras, Session session){
-        String sqlQuery = String.format("INSERT INTO history (LastUpdated, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData)" +
-                        " values ('%s','%s','%s','%s','%s','%s',%s)",
+        String sqlQuery = String.format(
+                "INSERT INTO history (LastUpdated, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData)" +
+                    " values ('%s','%s','%s','%s','%s','%s',%s)",
                 formatCurDate,
                 cameras.getSourceIp(),
                 cameras.getSourceModel(),
@@ -223,7 +218,10 @@ public class DataBaseProvider implements IDataBaseProvider {
     @Override
     public List<History> getHistory(String item){
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = "Select * FROM history WHERE SourceIp = \'" + item + "\' ORDER BY LastUpdated DESC LIMIT 5";
+        String sqlQuery = String.format(
+                "Select * FROM history WHERE SourceIp = '%s' ORDER BY LastUpdated DESC LIMIT 5",
+                item
+        );
         SQLQuery selectHistoryNode = session.createSQLQuery(sqlQuery);
         selectHistoryNode.addEntity(History.class);
         List selectedHistory = selectHistoryNode.list();

@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 
 import java.io.FileNotFoundException;
 
-
 /**
  * Created by avorobey on 21.09.2016.
  * @author Vorobey Alexandr
@@ -29,9 +28,5 @@ public class Properties {
         }catch (NullPointerException e){
             _log.error("Файл не найден");
         }
-    }
-
-    public Environment getProp(){
-        return env;
     }
 }

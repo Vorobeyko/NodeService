@@ -30,7 +30,7 @@ public class ActiveDirectory {
 
     private Environment myProperties;
 
-    private static Hashtable<String, String> ldapEnv = new Hashtable<String, String>(11);
+    private static Hashtable<String, String> ldapEnv = new Hashtable<String, String>();
     private static InitialDirContext ldapContext;
     private static SearchControls searchCtls;
     private static String searchBase;
@@ -73,7 +73,8 @@ public class ActiveDirectory {
                     totalResults++;
                     findUser = true;
                     Attributes attrs = sr.getAttributes();
-                    _log.info("Полное имя пользователя: " + sr.getName() + ", " + attrs.get("samAccountName") + ", " + attrs.get("mail"));
+                    _log.info("Авторизация прошла успешно. Полное имя пользователя: " + sr.getName() + "," +
+                            "Логин: " + attrs.get("samAccountName") + ", Email: " + attrs.get("mail"));
                 }
                 ldapContext.close();
                 if (totalResults == 0) {
@@ -89,14 +90,13 @@ public class ActiveDirectory {
 
     public String getNameUser(String nameUser) throws NamingException {
         String searchFilter = myProperties.getProperty("AD_SEARCH_FILTER") + nameUser + "))";
-        NamingEnumeration<javax.naming.directory.SearchResult> answer = ldapContext.search(searchBase, searchFilter, searchCtls);
+        NamingEnumeration<SearchResult> answer = ldapContext.search(searchBase, searchFilter, searchCtls);
         while (answer.hasMoreElements()) {
             javax.naming.directory.SearchResult sr = answer.next();
             String getName = sr.getName();
             String userFullName[] = getName.split("=");
             return userFullName[1];
         }
-        ldapContext.close();
         return "admin";
     }
 
@@ -117,7 +117,6 @@ public class ActiveDirectory {
             _log.error("Ошибка связи с Active Directory");
             ne.printStackTrace();
         }
-        ldapContext.close();
         return null;
     }
 }
