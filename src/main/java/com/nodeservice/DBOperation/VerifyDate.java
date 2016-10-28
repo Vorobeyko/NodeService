@@ -53,7 +53,6 @@ public class VerifyDate implements IVerifyDate {
                     try {
                         MailSender mailSender = new MailSender(myProperties.getProperty("SENDER"), myProperties.getProperty("PASSWORD"));
                         ActiveDirectory ad = new ActiveDirectory();
-                        ad.setLDAPConnection();
                         String userEmail = ad.getUsersEmail(source.getOwnBy());
                         if (userEmail != null) {
                             mailSender.send("Время бронирования источника с IP = " + source.getSourceIp() + " вышло.", //Тема письм

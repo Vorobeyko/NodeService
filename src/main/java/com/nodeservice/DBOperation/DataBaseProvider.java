@@ -236,19 +236,16 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @throws NamingException
      */
     private String getStringOwnBy(Date DueData, String user) throws NamingException {
-        try {
             if (DueData != null) {
                 if (user.equals("admin")) {
                     return "admin";
                 }
                 ActiveDirectory ad = new ActiveDirectory();
-                ad.setLDAPConnection();
                 return ad.getNameUser(user);
+            }else {
+                _log.error("Произошла ошибка в получении пользователя, вероятно пользователь зашел под логином admin");
+                return "";
             }
-        } catch (NullPointerException e){
-            _log.error("Произошла ошибка в получении пользователя, вероятно пользователь зашел под логином admin");
-        }
-        return "";
     }
 
     /**
@@ -277,16 +274,12 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @return DueData или NULL
      */
     private String getStringDueData(Date DueData){
-        try {
             if (DueData == null) {
+                _log.error("Значение даты равно null, что некорректно для выполнения запроса на обновление или добавление источника.");
                 return "NULL";
             } else {
                 return "\'" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DueData) + "\'";
             }
-        }catch (NullPointerException e){
-            _log.error("Вызвано исключение: " + e + ". Значение даты равно null, что некорректно для выполнения запроса на обновление или добавление источника.");
-            return "NULL";
-        }
     }
 
     /**

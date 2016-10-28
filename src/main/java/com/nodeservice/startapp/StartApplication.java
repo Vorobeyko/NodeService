@@ -101,7 +101,6 @@ public class StartApplication {
                       HttpServletResponse response) throws IOException {
         Cookie cookie = new Cookie("username", null);
         try {
-            ad.setLDAPConnection();
             if(ad.checkUser(user.getLogin()) || user.getLogin().equals("admin")){
                 cookie.setValue(user.getLogin());
                 cookie.setMaxAge(MAX_AGE_COOKIE);

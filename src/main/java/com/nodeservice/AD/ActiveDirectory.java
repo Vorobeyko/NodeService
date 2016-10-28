@@ -36,7 +36,7 @@ public class ActiveDirectory {
     private static String searchBase;
     private static String returnedAtts[]={"sn","givenName", "samAccountName","mail"}; //TODO: Убрать в конфигурационный файл
 
-    public void setLDAPConnection (){
+    private void setLDAPConnection (){
         try {
             this.myProperties = Properties.env;
             ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY,myProperties.getProperty("INITIAL_CONTEXT_FACTORY"));
@@ -61,6 +61,7 @@ public class ActiveDirectory {
     }
 
     public boolean checkUser (String loginUser) throws NamingException{
+        this.setLDAPConnection();
         boolean findUser = false;
         try {
             if (!loginUser.equals("admin")) {
@@ -76,7 +77,6 @@ public class ActiveDirectory {
                     _log.info("Авторизация прошла успешно. Полное имя пользователя: " + sr.getName() + "," +
                             "Логин: " + attrs.get("samAccountName") + ", Email: " + attrs.get("mail"));
                 }
-                ldapContext.close();
                 if (totalResults == 0) {
                     _log.warn("Запрашиваемый пользователь не найден");
                     return findUser;
@@ -89,6 +89,7 @@ public class ActiveDirectory {
     }
 
     public String getNameUser(String nameUser) throws NamingException {
+        this.setLDAPConnection();
         String searchFilter = myProperties.getProperty("AD_SEARCH_FILTER") + nameUser + "))";
         NamingEnumeration<SearchResult> answer = ldapContext.search(searchBase, searchFilter, searchCtls);
         while (answer.hasMoreElements()) {
@@ -101,6 +102,7 @@ public class ActiveDirectory {
     }
 
     public String getUsersEmail (String userFullName) throws NamingException {
+        this.setLDAPConnection();
         try {
             String searchFilter = myProperties.getProperty("AD_SEARCH_FILTER_USER_EMAIL") + userFullName + "))";
             NamingEnumeration<SearchResult> answer = ldapContext.search(searchBase, searchFilter, searchCtls);
