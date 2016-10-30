@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="resources/jquery/jquery.datetimepicker.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:500" rel="stylesheet">
     <script src="resources/jquery/jquery.js"></script>
     <script src="resources/jquery/jquery.tablesorter.js"></script>
     <script src="resources/jquery/jquery.metadata.js"></script>
@@ -25,17 +26,31 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
-<ul class="nav nav-tabs" role="tablist">
+  <script src="https://code.angularjs.org/1.5.8/angular-cookies.js"></script>
+
+<ul class="nav nav-tabs header" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">PTZ</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Stationary</a></li>
-    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal" style="right: 70px"
-      ng-click="showHistory()">
-        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-    </button>
     <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees"  id="button"
       ng-click="showDialogWithSourceInfo()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </button>
+    <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal"
+      ng-click="showHistory()">
+        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+    </button>
+    <div class="current-user">
+      <ul class="nav nav-pills">
+        <li class="dropdown" ng-init="currentUser = '${user.currentUser}'">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            {{currentUser}}</a>
+          <ul class="dropdown-menu">
+            <li><a ng-click="signOut()">Выйти из учетной записи</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 </ul>
 <div class="tab-content">
     <div class="tab-content">
@@ -62,7 +77,7 @@
                                 <td id="td_3" class="tdDescription">{{sourceInfo.sourceDescription}}</td>
                                 <td id="td_4">{{sourceInfo.ownBy}}</td>
                                 <td id="td_5">{{sourceInfo.comments}}</td>
-                                <td id="due-data">{{sourceInfo.dueData| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td id="due-data">{{sourceInfo.dueData | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                 <td id="td-state">{{sourceInfo.state}}</td>
                             </tr>
                     </tbody>
@@ -74,7 +89,7 @@
 </div>
 <div class="modal fade " id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content"
+        <div class="modal-content" style="width: 510px;"
           ng-controller="SourceOperations">
             <!-- ---------- Форма для отправления на сервер инфвормации о источнике ---------- -->
             <form id="form" role="form" name="sourceForm">
@@ -170,15 +185,27 @@
             <div role="tabpanel" class="tab-pane active" id="home" style="    margin: 10px;">
                 <div>
                     <table class="table table-bordered" id="selectTr">
+                      <thead>
+                      <tr>
+                        <th>LastUpdated</th>
+                        <th>Ip</th>
+                        <th>Model</th>
+                        <th>Description</th>
+                        <th style="width: 70px;">Own By</th>
+                        <th id="th-Comments">Comments</th>
+                        <th>Due Data</th>
+                      </tr>
+                      </thead>
                         <tbody id="historyTable">
                           <tr name="data"
                             ng-repeat="history in sourceHistory">
+                              <td>{{history.lastUpdated | date:'yyyy-MM-dd HH:mm:ss'}}</a></td>
                               <td>{{history.sourceIp}}</a></td>
                               <td>{{history.sourceModel}}</td>
                               <td class="tdDescription">{{history.sourceDescription}}</td>
                               <td>{{history.ownBy}}</td>
                               <td>{{history.comments}}</td>
-                              <td>{{history.dueData| date:'yyyy-MM-dd HH:mm:ss   '}}</td>
+                              <td>{{history.dueData | date:'yyyy-MM-dd HH:mm:ss   '}}</td>
                           </tr>
                         </tbody>
                     </table>

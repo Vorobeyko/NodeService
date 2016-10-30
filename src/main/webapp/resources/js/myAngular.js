@@ -1,5 +1,5 @@
 var loginAuth = angular.module('LoginPage',[]);
-var welcomePage = angular.module('WelcomePage',[]);
+var welcomePage = angular.module('WelcomePage',['ngCookies']);
 
 loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope, $http, $window) {
 	$scope.checkUsers = function(){
@@ -17,7 +17,7 @@ loginAuth.controller("LoginBody", ['$scope', '$http', '$window', function($scope
 		};
 }]);
 
-welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', function($scope, $interval, $http){
+welcomePage.controller('WelcomePageBody', ['$scope', '$window', '$cookies', '$interval','$http', function($scope, $window, $cookies, $interval, $http){
 	angular.element(document).ready(function () {
 		$http({
 		 method:'GET',
@@ -78,6 +78,12 @@ welcomePage.controller('WelcomePageBody', ['$scope', '$interval','$http', functi
 					dueData: selectedNote.eq(5).text(),
 			}
 		}
+	}
+
+	$scope.signOut = function(){
+		$cookies.remove('username');
+		$window.location.href = '/login';
+
 	}
 
 	function datetime(startTime){

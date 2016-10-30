@@ -15,6 +15,7 @@ import com.nodeservice.DBOperation.IVerifyDate;
 import com.nodeservice.instance.Cameras;
 import com.nodeservice.instance.History;
 import com.nodeservice.instance.User;
+import com.sun.javafx.sg.prism.NGShape;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,9 @@ import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @EnableScheduling
@@ -101,7 +104,7 @@ public class StartApplication {
                       HttpServletResponse response) throws IOException {
         Cookie cookie = new Cookie("username", null);
         try {
-            if(ad.checkUser(user.getLogin()) || user.getLogin().equals("admin")){
+            if(user.getLogin().equals("admin") || ad.checkUser(user.getLogin())){
                 cookie.setValue(user.getLogin());
                 cookie.setMaxAge(MAX_AGE_COOKIE);
                 response.addCookie(cookie);
@@ -126,9 +129,13 @@ public class StartApplication {
      */
     @RequestMapping(value = "/welcome",
                     method = RequestMethod.GET)
-    public ModelAndView welcomePage(@CookieValue (value = "username", required = false) String username){
+    public ModelAndView welcomePage(@CookieValue (value = "username", required = false) String username) throws NamingException {
         ModelAndView modelAndView = new ModelAndView();
         if (username != null){
+            Map<String,String> currentUser = new HashMap<String, String>();
+            if (username.equals("admin")) currentUser.put("currentUser","Администратор");
+            else currentUser.put("currentUser",ad.getNameUser(username));
+            modelAndView.addObject("user",currentUser);
             modelAndView.setViewName("welcome");
             return modelAndView;
         }else {
