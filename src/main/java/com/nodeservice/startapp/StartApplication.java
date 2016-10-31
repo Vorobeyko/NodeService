@@ -15,7 +15,6 @@ import com.nodeservice.DBOperation.IVerifyDate;
 import com.nodeservice.instance.Cameras;
 import com.nodeservice.instance.History;
 import com.nodeservice.instance.User;
-import com.sun.javafx.sg.prism.NGShape;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

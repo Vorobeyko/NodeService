@@ -18,7 +18,9 @@
     <script src="resources/jquery/jquery.datetimepicker.js"></script>
     <script src="resources/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script src="<c:url value="/resources/js/myAngular.js"/>"></script>
+    <script src="<c:url value="/resources/js/controllers/welcomePageController.js"/>"></script>
+    <script src="<c:url value="/resources/js/factories.js"/>"></script>
+    <script src="<c:url value="/resources/js/directives.js"/>"></script>
     <title>Nodes Page Java</title>
 </head>
 <body
@@ -27,10 +29,10 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
   <script src="https://code.angularjs.org/1.5.8/angular-cookies.js"></script>
-
 <ul class="nav nav-tabs header" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">PTZ</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Stationary</a></li>
+    <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz" role="tab" data-toggle="tab">Поворотные камеры</a></li>
+    <li role="presentation"><a href="#stationary" aria-controls="stationary" role="tab" data-toggle="tab">Стационарные камеры</a></li>
+    <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab">Компьютеры</a></li>
     <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees"  id="button"
       ng-click="showDialogWithSourceInfo()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -54,7 +56,7 @@
 </ul>
 <div class="tab-content">
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="home">
+        <div role="tabpanel" class="tab-pane active" id="ptz">
             <div>
                 <table class="table table-bordered sortIp" id="selectTr">
                     <thead>
@@ -71,10 +73,11 @@
                     <tbody id="serviceNote" >
                             <tr name="data"
                               ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
-                              ng-repeat="sourceInfo in sourcesInfo | orderBy:'sourceIp' " ns-hover-note click-note>
+                              ng-repeat="sourceInfo in sourcesInfo | orderBy:'sourceIp' "
+                              ng-click="" ns-hover-note click-note>
                                 <td id="td_1"><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
                                 <td id="td_2">{{sourceInfo.sourceModel}}</td>
-                                <td id="td_3" class="tdDescription">{{sourceInfo.sourceDescription}}</td>
+                                <td id="td_3"  class="tdDescription">{{sourceInfo.sourceDescription}}</td>
                                 <td id="td_4">{{sourceInfo.ownBy}}</td>
                                 <td id="td_5">{{sourceInfo.comments}}</td>
                                 <td id="due-data">{{sourceInfo.dueData | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -84,7 +87,25 @@
                 </table>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="profile"> В табе пока нет ничего, но вероятно появится скоро)) .</div>
+        <div role="tabpanel" class="tab-pane" id="stationary"> В табе пока нет ничего, но вероятно появится скоро)) .</div>
+        <div role="tabpanel" class="tab-pane" id="computers" >
+              <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                      <th>IP</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                          <tr name="data">
+                              <td>172.16.80.5</td>
+                              <td id="test" ng-controller="computers">NASH</td>
+                              <td>Комп Воробья</td>
+                          </tr>
+                  </tbody>
+              </table>
+        </div>
     </div>
 </div>
 <div class="modal fade " id="myModal" tabindex="-1" role="dialog">

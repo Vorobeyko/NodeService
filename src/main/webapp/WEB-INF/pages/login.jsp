@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script async src="/resources/jquery/jquery.js"></script>
-    <script src="<c:url value="/resources/js/myAngular.js"/>"></script>
+    <script src="<c:url value="/resources/js/controllers/loginController.js"/>"></script>
     <script async src="/resources/bootstrap/js/bootstrap.js"></script>
     <meta charset="UTF-8">
     <title>Login</title>
