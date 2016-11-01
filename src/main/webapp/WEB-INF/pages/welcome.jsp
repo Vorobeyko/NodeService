@@ -89,18 +89,31 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="stationary"> В табе пока нет ничего, но вероятно появится скоро)) .</div>
         <div role="tabpanel" class="tab-pane" id="computers" >
-              <table class="table table-bordered">
+              <table class="table table-bordered" ng-controller="computers">
                   <thead>
                   <tr>
-                      <th>IP</th>
-                      <th>Name</th>
-                      <th>Description</th>
+                      <th class="tab-computers-th">IP</th>
+                      <th class="tab-computers-th">Name</th>
+                      <th class="tab-computers-th">Description</th>
                   </tr>
                   </thead>
                   <tbody>
-                          <tr name="data">
+                          <tr name="data" >
                               <td>172.16.80.5</td>
-                              <td id="test" ng-controller="computers">NASH</td>
+                              <td id="test"
+                                ng-class="click.yes ? 'min-padding' : 'max-padding'">
+                                <span
+                                  ng-click="click.yes = true"
+                                  ng-hide="click.yes"
+                                  ng-show="!click.yes">NASH</span>
+                                  <div ng-show="click.yes" ng-hide="!click.yes" class="input-group">
+                                    <input type="text" class="tab-computers-input" value="NASH"/>
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button" ng-click="click.yes = false">X</button>
+                                      <button class="btn btn-default" type="button">V</button>
+                                    </span>
+                                  </div>
+                              </td>
                               <td>Комп Воробья</td>
                           </tr>
                   </tbody>

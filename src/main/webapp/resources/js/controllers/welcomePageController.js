@@ -70,15 +70,14 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 }])
 
 welcomePage.controller('computers', ['$element', '$scope',function($element, $scope){
-  $element.on('click',function(){
-    // $element.find('.in').show();
-    // $scope.text = $element.text();
-    $element[0].innerHTML = "<input class='in' type='text' name='name' value=''>"
-    console.log($element);
-  })
-  // $scope.changeTag = function(name){
-  //   console.log(name);
-  // }
+  // $element.on('click',function(){
+  //
+  //   // console.log($element[0]);
+  //   // console.log($element[0].children);
+  // })
+  $scope.changeTag = function(name){
+    console.log(name.target);
+  }
 }])
 
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
