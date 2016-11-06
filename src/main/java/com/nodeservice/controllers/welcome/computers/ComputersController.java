@@ -1,7 +1,6 @@
 package com.nodeservice.controllers.welcome.computers;
 
-import com.nodeservice.AD.ActiveDirectory;
-import com.nodeservice.DBOperation.ComputersDataBaseOperations;
+import com.nodeservice.DBOperation.ComputersDBO;
 import com.nodeservice.DBOperation.IDataBaseProvider;
 import com.nodeservice.instance.Computers;
 import org.apache.log4j.LogManager;
@@ -23,7 +22,7 @@ public class ComputersController {
     private final Logger _log = LogManager.getLogger(this.getClass());
 
     @Autowired
-    IDataBaseProvider<Computers> computersDataBaseOperations = new ComputersDataBaseOperations();
+    IDataBaseProvider<Computers> computersDataBaseOperations = new ComputersDBO();
 
     @RequestMapping(value = "/welcome/computers",
             method = RequestMethod.GET)

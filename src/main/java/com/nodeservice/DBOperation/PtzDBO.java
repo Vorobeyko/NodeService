@@ -23,7 +23,7 @@ import java.util.*;
 
 @Repository
 @Transactional
-public class DataBaseProvider implements IDataBaseProvider<Cameras> {
+public class PtzDBO implements IDataBaseProvider<Cameras> {
     private final Logger _log = LogManager.getLogger(this.getClass());
     private SessionFactory sessionFactory;
     private SimpleDateFormat formatCur = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

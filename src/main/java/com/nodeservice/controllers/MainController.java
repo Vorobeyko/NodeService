@@ -49,12 +49,10 @@ public class MainController {
      */
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String main(@CookieValue (value = "username", required = false) String username){
-        System.out.println(username);
-        if (username != null){
+        if (username != null)
             return "redirect:welcome";
-        }else {
+        else
             return "redirect:login";
-        }
     }
 
     /**

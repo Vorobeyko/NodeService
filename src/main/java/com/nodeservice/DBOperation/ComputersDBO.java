@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class ComputersDataBaseOperations implements IDataBaseProvider<Computers> {
+public class ComputersDBO implements IDataBaseProvider<Computers> {
 
     private final Logger _log = LogManager.getLogger(this.getClass());
     private SessionFactory sessionFactory;

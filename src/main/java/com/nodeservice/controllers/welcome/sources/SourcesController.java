@@ -1,6 +1,6 @@
 package com.nodeservice.controllers.welcome.sources;
 
-import com.nodeservice.DBOperation.DataBaseProvider;
+import com.nodeservice.DBOperation.PtzDBO;
 import com.nodeservice.DBOperation.IDataBaseProvider;
 import com.nodeservice.instance.Cameras;
 import com.nodeservice.instance.History;
@@ -22,7 +22,7 @@ public class SourcesController {
     private final Logger _log = LogManager.getLogger(this.getClass());
 
     @Autowired
-    IDataBaseProvider<Cameras> dataBaseProvider = new DataBaseProvider();
+    IDataBaseProvider<Cameras> dataBaseProvider = new PtzDBO();
 
     /**
      * Метод для обновления источника
@@ -44,11 +44,10 @@ public class SourcesController {
                 break;
             case "update-source":
                 String updateSource = null;
-                if (cameras.getOwnBy() == null || cameras.getOwnBy().equals("")) {
+                if (cameras.getOwnBy() == null || cameras.getOwnBy().equals(""))
                     updateSource = dataBaseProvider.update(cameras, username);
-                } else {
+                else
                     updateSource = dataBaseProvider.update(cameras, "");
-                }
                 operationResponse(updateSource, response);
                 break;
             case "delete-source":
@@ -96,5 +95,4 @@ public class SourcesController {
         else if (operation.equals("error"))response.setStatus(602); //Код ошибки 602 - Произошла одна из известных ошибок NullPointerException или NamingException
         else if (operation.equals("unknown")) response.setStatus(603); //Код ошибки 603 - Неизвестная ошибка, источник не добавлен
     }
-
 }
