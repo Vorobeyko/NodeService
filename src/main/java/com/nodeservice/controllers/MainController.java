@@ -27,7 +27,7 @@ import java.util.Map;
 @EnableScheduling
 public class MainController {
     private final Logger _log = LogManager.getLogger(this.getClass());
-    private static ActiveDirectory ad = new ActiveDirectory();
+    private ActiveDirectory ad = new ActiveDirectory();
 
     @Autowired
     IVerifyDate db = new VerifyDate();
@@ -49,6 +49,7 @@ public class MainController {
      */
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String main(@CookieValue (value = "username", required = false) String username){
+        System.out.println(username);
         if (username != null){
             return "redirect:welcome";
         }else {
@@ -80,7 +81,7 @@ public class MainController {
      */
     @RequestMapping(value = "/welcome",
             method = RequestMethod.GET)
-    public static ModelAndView welcomePage(@CookieValue(value = "username", required = false) String username) throws NamingException {
+    public ModelAndView welcomePage(@CookieValue(value = "username", required = false) String username) throws NamingException {
         ModelAndView modelAndView = new ModelAndView();
         if (username != null){
             Map<String,String> currentUser = new HashMap<String, String>();

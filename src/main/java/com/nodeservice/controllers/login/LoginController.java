@@ -12,8 +12,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.nodeservice.controllers.MainController.welcomePage;
-
 /**
  * Created by VorobeyAlex on 06.11.2016.
  */
@@ -42,9 +40,9 @@ public class LoginController {
             if(user.getLogin().equals("admin") || ad.checkUser(user.getLogin())){
                 cookie.setValue(user.getLogin());
                 cookie.setMaxAge(MAX_AGE_COOKIE);
+                cookie.setPath("/");
                 response.addCookie(cookie);
                 _log.info("Пользователь " + user.getLogin() + " успешно прошел авторизацию.");
-                welcomePage(user.getLogin());//Если авторизация прошла успешно - переходим на главную страницу
             }
             else{
                 response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED );
