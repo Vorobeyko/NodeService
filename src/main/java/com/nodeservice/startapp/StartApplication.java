@@ -8,11 +8,9 @@ package com.nodeservice.startapp;
  **/
 
 import com.nodeservice.AD.ActiveDirectory;
-import com.nodeservice.DBOperation.VerifyDate;
-import com.nodeservice.DBOperation.DataBaseProvider;
-import com.nodeservice.DBOperation.IDataBaseProvider;
-import com.nodeservice.DBOperation.IVerifyDate;
+import com.nodeservice.DBOperation.*;
 import com.nodeservice.instance.Cameras;
+import com.nodeservice.instance.Computers;
 import com.nodeservice.instance.History;
 import com.nodeservice.instance.User;
 import org.apache.log4j.LogManager;
@@ -53,7 +51,12 @@ public class StartApplication {
     }
 
     @Autowired
-    IDataBaseProvider dataBaseProvider = new DataBaseProvider();
+    IDataBaseProvider<Computers> computersDataBaseOperations = new ComputersDataBaseOperations();
+
+    @Autowired
+    IDataBaseProvider<Cameras> dataBaseProvider = new DataBaseProvider();
+
+
 
     /**
      * Метод прослушивающий корневой адрес
@@ -150,8 +153,8 @@ public class StartApplication {
     @RequestMapping(value = "/getNote",
             method = RequestMethod.GET)
     @ResponseBody
-    public List<Cameras> getNote(){
-        List<Cameras> selectSourceInfo = dataBaseProvider.selectSourceNotDeleted();
+    public List<?> getNote(){
+        List<?> selectSourceInfo = dataBaseProvider.select();
         return selectSourceInfo;
     }
 
@@ -180,7 +183,7 @@ public class StartApplication {
     public void addSource(@RequestBody  Cameras cameras,
                           @CookieValue (value = "username") String username,
                           HttpServletResponse response) {
-        String addSource = dataBaseProvider.addSource(cameras, username);
+        String addSource = dataBaseProvider.add(cameras, username);
         operationResponse(addSource, response);
     }
 
@@ -198,9 +201,9 @@ public class StartApplication {
                              HttpServletResponse response) {
         String updateSource = null;
         if (cameras.getOwnBy() == null || cameras.getOwnBy().equals("")) {
-            updateSource = dataBaseProvider.updateSource(cameras, username);
+            updateSource = dataBaseProvider.update(cameras, username);
         } else {
-            updateSource = dataBaseProvider.updateSource(cameras, "");
+            updateSource = dataBaseProvider.update(cameras, "");
         }
         operationResponse(updateSource, response);
     }
@@ -213,7 +216,7 @@ public class StartApplication {
             method = RequestMethod.POST)
     @ResponseBody
     public void deleteSource(@RequestBody  Cameras cameras) {
-        dataBaseProvider.deleteSource(cameras);
+        dataBaseProvider.delete(cameras);
     }
 
     /**
@@ -228,5 +231,12 @@ public class StartApplication {
         else if (operation.equals("unknown")) response.setStatus(603); //Код ошибки 603 - Неизвестная ошибка, источник не добавлен
     }
 
-
+    @RequestMapping(value = "/welcome/computers",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public List<Computers> getComputers(){
+        System.out.println("Req success");
+        List<Computers> selectSourceInfo = computersDataBaseOperations.select();
+        return selectSourceInfo;
+    }
 }

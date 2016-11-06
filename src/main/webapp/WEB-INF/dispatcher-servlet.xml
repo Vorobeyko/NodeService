@@ -11,7 +11,7 @@
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <context:component-scan base-package="com.nodeservice.*, com.nodeservice.AD, com.nodeservice.DBOperation" />
+    <context:component-scan base-package="com.nodeservice.*, com.nodeservice.AD, com.nodeservice.DBOperation.*" />
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
@@ -27,7 +27,6 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="com.nodeservice"/>
         <property name="annotatedPackages" value="com.nodeservice"/>
-        <property name="annotatedClasses" value="com.nodeservice.instance.Cameras"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>

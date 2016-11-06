@@ -32,7 +32,8 @@
 <ul class="nav nav-tabs header" role="tablist">
     <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz" role="tab" data-toggle="tab">Поворотные камеры</a></li>
     <li role="presentation"><a href="#stationary" aria-controls="stationary" role="tab" data-toggle="tab">Стационарные камеры</a></li>
-    <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab">Компьютеры</a></li>
+    <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab"
+      ng-click="clickOnTabComputers()">Компьютеры</a></li>
     <button type="sudmit" class="btn btn-primary btn-group-sm btn-elvees"  id="button"
       ng-click="showDialogWithSourceInfo()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -89,32 +90,38 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="stationary"> В табе пока нет ничего, но вероятно появится скоро)) .</div>
         <div role="tabpanel" class="tab-pane" id="computers" >
-              <table class="table table-bordered" ng-controller="computers">
+              <table class="table table-bordered">
                   <thead>
                   <tr>
-                      <th class="tab-computers-th">IP</th>
-                      <th class="tab-computers-th">Name</th>
-                      <th class="tab-computers-th">Description</th>
+                      <th>IP</th>
+                      <td>Name</th>
+                      <th>Description</th>
                   </tr>
                   </thead>
                   <tbody>
-                          <tr name="data" >
-                              <td>172.16.80.5</td>
-                              <td id="test"
+                          <tr name="data"
+                            ng-repeat="comps in computers">
+                              <td class="tab-computers-td-ip">{{comps.computerIP}}</td>
+                              <td id="test" class="tab-computers-td-name"
                                 ng-class="click.yes ? 'min-padding' : 'max-padding'">
                                 <span
                                   ng-click="click.yes = true"
                                   ng-hide="click.yes"
-                                  ng-show="!click.yes">NASH</span>
+                                  ng-show="!click.yes">{{comps.computerName}}</span>
                                   <div ng-show="click.yes" ng-hide="!click.yes" class="input-group">
-                                    <input type="text" class="tab-computers-input" value="NASH"/>
+                                    <textarea class="tab-computers-input" rows="2"></textarea>
                                     <span class="input-group-btn">
                                       <button class="btn btn-default" type="button" ng-click="click.yes = false">X</button>
                                       <button class="btn btn-default" type="button">V</button>
                                     </span>
                                   </div>
                               </td>
-                              <td>Комп Воробья</td>
+                              <td class="tab-computers-td-description">
+                                <span
+                                  ng-click="click.yes = true"
+                                  ng-hide="click.yes"
+                                  ng-show="!click.yes">{{comps.computerDescription}}</span>
+                                </td>
                           </tr>
                   </tbody>
               </table>

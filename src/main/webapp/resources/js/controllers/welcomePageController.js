@@ -67,16 +67,13 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 					step: 30
 			});
 	}
-}])
 
-welcomePage.controller('computers', ['$element', '$scope',function($element, $scope){
-  // $element.on('click',function(){
-  //
-  //   // console.log($element[0]);
-  //   // console.log($element[0].children);
-  // })
-  $scope.changeTag = function(name){
-    console.log(name.target);
+  $scope.clickOnTabComputers = function(){
+		console.log("nen");
+    $http.get("/welcome/computers").then(function(response){
+			console.log(response.data);
+			$scope.computers = response.data;
+		});
   }
 }])
 

@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * Created by avorobey on 27.09.2016.
  */
-public interface IDataBaseProvider {
+public interface IDataBaseProvider<T> {
 
-    String updateSource(Cameras cameras, String authorizedUser);
+    String update(Cameras cameras, String authorizedUser);
 
-    String addSource(Cameras cameras, String authorizedUser);
+    String add(Cameras cameras, String authorizedUser);
 
-    void deleteSource(Cameras cameras);
+    void delete(Cameras cameras);
 
-    List<Cameras> selectSourceNotDeleted();
+    List<T> select();
 
     List getHistory(String item);
 

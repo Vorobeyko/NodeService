@@ -23,7 +23,7 @@ import java.util.*;
 
 @Repository
 @Transactional
-public class DataBaseProvider implements IDataBaseProvider {
+public class DataBaseProvider implements IDataBaseProvider<Cameras> {
     private final Logger _log = LogManager.getLogger(this.getClass());
     private SessionFactory sessionFactory;
     private SimpleDateFormat formatCur = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,7 +45,7 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @return
      */
     @Override
-    public String updateSource(Cameras cameras, String authorizedUser) {
+    public String update(Cameras cameras, String authorizedUser) {
         Session session = sessionFactory.getCurrentSession();
         try {
             String stringSQLQuery =
@@ -90,7 +90,7 @@ public class DataBaseProvider implements IDataBaseProvider {
      *              unknown (неизвестная ошибка, источник не добавлен)
      */
     @Override
-    public String addSource(Cameras cameras, String authorizedUser) {
+    public String add(Cameras cameras, String authorizedUser) {
         Session session = sessionFactory.getCurrentSession();
         String selectCount = "select count(*) as id from SourceInfo";
         SQLQuery query = session.createSQLQuery(selectCount).addScalar("id", LongType.INSTANCE);
@@ -147,7 +147,7 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @param cameras
      */
     @Override
-    public void deleteSource(Cameras cameras) {
+    public void delete(Cameras cameras) {
         Session session = sessionFactory.getCurrentSession();
         String stringSQLQuery = String.format(
                 "UPDATE sourceinfo " +
@@ -165,7 +165,7 @@ public class DataBaseProvider implements IDataBaseProvider {
      * @return
      */
     @Override
-    public List<Cameras> selectSourceNotDeleted() {
+    public List<Cameras> select() {
         Session session = sessionFactory.getCurrentSession();
         String sqlQuery = "SELECT count(*) AS id FROM SourceInfo";
         SQLQuery query = session.createSQLQuery(sqlQuery).addScalar("id", LongType.INSTANCE);
