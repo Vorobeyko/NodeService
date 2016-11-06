@@ -2,7 +2,7 @@ var welcomePage = angular.module('WelcomePage',['ngCookies']);
 var nodes = 'Hello'
 welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookies', '$interval','$http', function(serv, $scope, $window, $cookies, $interval, $http){
 	angular.element(document).ready(function () {
-		$http.get("/getNote").then(function(response){
+		$http.get("/welcome/sources/get-note").then(function(response){
 			$scope.sourcesInfo = response.data;
 		});
 		$interval(callAtInterval, 10000);
@@ -26,7 +26,7 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 			var selectedNote = $("#selectTr tr.myactive td");
 			var sourceIp = selectedNote.eq(0).text()
 			$scope.historySelectedSource = sourceIp;
-			$http.post('/getHistory',sourceIp).then(function(response){
+			$http.post('/welcome/sources/get-history',sourceIp).then(function(response){
 				$scope.sourceHistory = response.data;
 			})
 		}
@@ -80,9 +80,9 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
 	$scope.regexSourceIP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 
-	$scope.addSource = function() { POSTRequest('/addSource', getFormInput($scope), $http) }
- 	$scope.updateSource = function(){ POSTRequest('/updateSource', getFormInput($scope), $http) }
-	$scope.deleteSource = function(){ POSTRequest('/deleteSource', getFormInput($scope), $http)	}
+	$scope.addSource = function() { POSTRequest('/welcome/sources/add-source', getFormInput($scope), $http) }
+ 	$scope.updateSource = function(){ POSTRequest('/welcome/sources/update-source', getFormInput($scope), $http) }
+	$scope.deleteSource = function(){ POSTRequest('/welcome/sources/delete-source', getFormInput($scope), $http)	}
 
 	$scope.showCheckDeleteSource = function(){
 		$('#checkDeleteSource').modal({

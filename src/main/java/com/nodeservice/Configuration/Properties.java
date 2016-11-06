@@ -7,8 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;
 
-import java.io.FileNotFoundException;
-
 /**
  * Created by avorobey on 21.09.2016.
  * @author Vorobey Alexandr

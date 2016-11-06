@@ -11,7 +11,7 @@
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <context:component-scan base-package="com.nodeservice.*, com.nodeservice.AD, com.nodeservice.DBOperation.*" />
+    <context:component-scan base-package="com.nodeservice.controllers, com.nodeservice.AD, com.nodeservice.DBOperation" />
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
