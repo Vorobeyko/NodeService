@@ -15,7 +15,7 @@
     <script src="<c:url value="/resources/js/controllers/loginController.js"/>"></script>
     <script async src="/resources/bootstrap/js/bootstrap.js"></script>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login Page</title>
 </head>
 <body
   ng-controller="LoginBody">
