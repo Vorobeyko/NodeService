@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="resources/image/favicon.ico">
     <link rel="stylesheet" href="resources/css/style.css">
-    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="resources/jquery/jquery.datetimepicker.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:500" rel="stylesheet">
@@ -16,7 +16,7 @@
     <script src="resources/jquery/jquery.metadata.js"></script>
     <script src="resources/jquery/jquery.datetimepicker.full.js"></script>
     <script src="resources/jquery/jquery.datetimepicker.js"></script>
-    <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="<c:url value="/resources/js/controllers/welcomePageController.js"/>"></script>
     <script src="<c:url value="/resources/js/factories.js"/>"></script>
