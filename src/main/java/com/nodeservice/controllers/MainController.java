@@ -27,6 +27,7 @@ import java.util.Map;
 @EnableScheduling
 public class MainController {
     private final Logger _log = LogManager.getLogger(this.getClass());
+
     private ActiveDirectory ad = new ActiveDirectory();
 
     @Autowired
