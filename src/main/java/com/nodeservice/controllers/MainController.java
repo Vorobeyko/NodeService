@@ -83,7 +83,7 @@ public class MainController {
     public ModelAndView welcomePage(@CookieValue(value = "username", required = false) String username) throws NamingException {
         ModelAndView modelAndView = new ModelAndView();
         if (username != null){
-            Map<String,String> currentUser = new HashMap<String, String>();
+            Map<String,String> currentUser = new HashMap<>();
             if (username.equals("admin")) currentUser.put("currentUser","Администратор");
             else currentUser.put("currentUser",ad.getNameUser(username));
             modelAndView.addObject("user",currentUser);

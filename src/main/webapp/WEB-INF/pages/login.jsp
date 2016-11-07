@@ -26,11 +26,11 @@
   ng-submit="checkUsers()">
     <div  class="blockForm">
         <div class="form-group">
-            <label>Windows login</label>
-            <input type="text" name="username" class="form-control" placeholder="Login"
+            <label>Введите логин Вашей учетной записи Windows</label>
+            <input type="text" name="username" class="form-control" placeholder="Логин"
               ng-model="login">
         </div>
-        <button type="submit" class="btn btn-default" value="login">Submit</button>
+        <button type="submit" class="btn btn-default" value="login">Войти</button>
         <p id="errorCheckUser">{{loginError}}</p>
     </div>
 </form>

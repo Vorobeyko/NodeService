@@ -20,11 +20,14 @@ public class Computers {
     private String computerName;
     @Column(name = "ComputerDescription")
     private String computerDescription;
+    @Column(name = "Owner")
+    private String owner;
 
-    public Computers (String compIP, String compName, String compDescription){
+    public Computers (String compIP, String compName, String compDescription, String owner){
         this.computerIP = compIP;
         this.computerName = compName;
         this.computerDescription = compDescription;
+        this.owner = owner;
     }
 
     public Computers(){}
@@ -59,5 +62,13 @@ public class Computers {
 
     public void setComputerDescription(String computerDescription) {
         this.computerDescription = computerDescription;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

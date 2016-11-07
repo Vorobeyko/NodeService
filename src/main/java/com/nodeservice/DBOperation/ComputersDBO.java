@@ -64,9 +64,10 @@ public class ComputersDBO implements IDataBaseProvider<Computers> {
             Computers source = (Computers) session.get(Computers.class, i);
 
             listItems.add(new Computers(
+                    source.getComputerIP(),
                     source.getComputerName(),
                     source.getComputerDescription(),
-                    source.getComputerIP()
+                    source.getOwner()
                     )
             );
         }

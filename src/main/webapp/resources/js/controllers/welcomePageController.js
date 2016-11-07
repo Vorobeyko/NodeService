@@ -69,7 +69,6 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 	}
 
   $scope.clickOnTabComputers = function(){
-		console.log("nen");
     $http.get("/welcome/computers").then(function(response){
 			console.log(response.data);
 			$scope.computers = response.data;

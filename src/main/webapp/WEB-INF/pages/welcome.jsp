@@ -59,13 +59,13 @@
                 <table class="table table-bordered sortIp" id="selectTr">
                     <thead>
                     <tr>
-                        <th>Ip <span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
-                        <th>Model<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
-                        <th>Description</th>
-                        <th>Own By<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
-                        <th id="th-Comments">Comments</th>
-                        <th>Due Data<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
-                        <th>State<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
+                        <th>IP<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
+                        <th>Модель<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
+                        <th>Описание</th>
+                        <th>Забронировал<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
+                        <th id="th-Comments">Комментарий</th>
+                        <th>Срок<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
+                        <th>Состояние<span class="glyphicon glyphicon-chevron-down" style="float: right;" aria-hidden="true"></span></th>
                     </tr>
                     </thead>
                     <tbody id="serviceNote" >
@@ -91,8 +91,9 @@
                   <thead>
                   <tr>
                       <th>IP</th>
-                      <td>Name</th>
-                      <th>Description</th>
+                      <td>Имя</th>
+                      <th>Описание</th>
+                      <th>Владелец</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -106,7 +107,7 @@
                                   ng-hide="click.yes"
                                   ng-show="!click.yes">{{comps.computerName}}</span>
                                   <div ng-show="click.yes" ng-hide="!click.yes" class="input-group">
-                                    <textarea class="tab-computers-input" rows="2"></textarea>
+                                    <textarea class="tab-computers-input">{{comps.computerName}}</textarea>
                                     <span class="input-group-btn">
                                       <button class="btn btn-default" type="button" ng-click="click.yes = false">X</button>
                                       <button class="btn btn-default" type="button">V</button>
@@ -119,6 +120,9 @@
                                   ng-hide="click.yes"
                                   ng-show="!click.yes">{{comps.computerDescription}}</span>
                                 </td>
+                                <td class="tab-computers-td-description">
+                                  <span>{{comps.owner}}</span>
+                                  </td>
                           </tr>
                   </tbody>
               </table>
@@ -127,7 +131,7 @@
 </div>
 <div class="modal fade " id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="width: 510px;"
+        <div class="modal-content" style="width: 464px;"
           ng-controller="SourceOperations">
             <!-- ---------- Форма для отправления на сервер инфвормации о источнике ---------- -->
             <form id="form" role="form" name="sourceForm">
@@ -139,18 +143,18 @@
                       required>
                 </div>
                 <div class="input-group" ng-class="sourceForm.nameSourceModel.$invalid ? 'has-error has-feedback' : 'has-success  has-feedback'">
-                    <span class="input-group-addon">Model</span>
+                    <span class="input-group-addon">Модель</span>
                     <input type="text" class="form-control" name="nameSourceModel"
                       ng-model="sources.sourceModel"
                       required>
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon">Description</span>
+                    <span class="input-group-addon">Описание</span>
                     <input type="text" class="form-control"
                       ng-model="sources.sourceDescription">
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon">Comment</span>
+                    <span class="input-group-addon">Комментарий</span>
                     <input type="text" class="form-control"
                       ng-model="sources.comments">
                 </div>
@@ -161,7 +165,7 @@
                     </label>
                 </div>
                 <div class="input-group date">
-                    <span class="input-group-addon">Due Data</span>
+                    <span class="input-group-addon">Срок</span>
                     <input type="datetime" class="form-control" id="datetimepicker"
                       ng-disabled="!isReserv"
                       ng-model="sources.dueData">
@@ -173,37 +177,37 @@
                     <button type="submit"  class="btn btn-success" id="succes"
                       ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid"
                       ng-click="addSource()" >
-                        <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Add source
+                        <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить
                     </button>
                     <button type="submit" class="btn btn-info" id="Update" name="Update" value="Update"
                       ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid"
                       ng-click="updateSource()">
-                        <span class="glyphicon glyphicon-refresh" style="margin-right: 5px;" aria-hidden="true"></span>Update source
+                        <span class="glyphicon glyphicon-refresh" style="margin-right: 5px;" aria-hidden="true"></span>Обновить
                     </button>
                     <%-- data-toggle="modal" data-target="#checkDeleteSource" --%>
                     <div  class="btn btn-danger show-modal" id="delete"
                       ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid"
                       ng-click="(sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid) ? null : showCheckDeleteSource()">
-                        <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Delete source
+                        <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Удалить
                     </div>
                     <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal()"">
-                        <span class="glyphicon glyphicon-remove" " style="margin-right: 5px;" aria-hidden="true"></span>Close
+                        <span class="glyphicon glyphicon-remove" " style="margin-right: 5px;" aria-hidden="true"></span>Закрыть
                     </div>
                 </div>
                 <p id="addSourceError">{{addSourceError}}</p>
                 <!-- ------ Модальное окно для подтверждения удаления источника ------  -->
                 <div class="modal fade" id="checkDeleteSource" tabindex="-1" role="dialog">
                     <div class="modal-dialog checkDeleteSource">
-                        <div class="modal-content">
+                        <div class="modal-content" style="width: 180px;">
                             <div class="checkContent">
                                 <div>
-                                    <p style="text-align: center">Are you sure?</p>
+                                    <p style="text-align: center">Ты уверен, что хочешь удалить устройство?</p>
                                 </div>
                                 <button type="submit" class="btn btn-danger" name="delete" ng-click="deleteSource()">
-                                    <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Yes
+                                    <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Да
                                 </button>
                                 <div id="close" class="btn btn-default" onclick="$('#checkDeleteSource').modal('hide')">
-                                    <span class="glyphicon glyphicon-remove" style="margin-right: 5px;" aria-hidden="true"></span>No
+                                    <span class="glyphicon glyphicon-remove" style="margin-right: 5px;" aria-hidden="true"></span>Нет
                                 </div>
                             </div>
                         </div>
@@ -214,7 +218,7 @@
     </div>
 </div>
 <div class="modal fade " id="historyModal" tabindex="-1" role="dialog" aria-labelledby="checkDeleted">
-    <div class="modal-dialog history">
+    <div class="modal-dialog history" style="min-width: 1260px!important;max-width: 1500px!important;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" ng-click="closeHistoryModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -225,13 +229,13 @@
                     <table class="table table-bordered" id="selectTr">
                       <thead>
                       <tr>
-                        <th>LastUpdated</th>
-                        <th>Ip</th>
-                        <th>Model</th>
-                        <th>Description</th>
-                        <th style="width: 70px;">Own By</th>
-                        <th id="th-Comments">Comments</th>
-                        <th>Due Data</th>
+                        <th>Последнее обновление</th>
+                        <th>IP</th>
+                        <th>Модель</th>
+                        <th>Описание</th>
+                        <th style="width: 70px;">Забронировал</th>
+                        <th id="th-Comments">Комментарий</th>
+                        <th>Срок</th>
                       </tr>
                       </thead>
                         <tbody id="historyTable">
