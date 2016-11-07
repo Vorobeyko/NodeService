@@ -3,4 +3,4 @@ $ cat .gitignore
 out/
 target/
 *.log
-*.properties
+conf.properties
