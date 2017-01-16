@@ -1,6 +1,7 @@
 var welcomePage = angular.module('WelcomePage',['ngCookies']);
 var nodes = 'Hello'
-welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookies', '$interval','$http', function(serv, $scope, $window, $cookies, $interval, $http){
+welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookies', '$interval','$http', '$filter',
+ function(serv, $scope, $window, $cookies, $interval, $http, $filter){
 	angular.element(document).ready(function () {
 		$http.get("/welcome/sources/get-note").then(function(response){
 			$scope.sourcesInfo = response.data;
@@ -37,22 +38,27 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 		$('#historyModal').modal('hide')
 	}
 
-	$scope.showDialogWithSourceInfo = function(){
+	/*
+	* Показать диалоговое окно
+	*/
+  $scope.fDueDataIntoTheForm = false;
+	$scope.showDialogWithSourceInfo = function(source_info, viewId){
+		if (source_info != null){
+			$scope.sources = {
+					sourceIP: source_info.sourceIp,
+					sourceModel: source_info.sourceModel,
+					sourceDescription: source_info.sourceDescription,
+					comments: source_info.comments,
+					dueData: $filter('date')(source_info.dueData, 'yyyy-MM-dd HH:mm:ss', '+0300'),
+			}
+      if ($scope.sources.dueData != null) $scope.fDueDataIntoTheForm = true;
+      else $scope.fDueDataIntoTheForm = false;
+		}
 		datetime();
-		$('#myModal').modal({
+		$(viewId).modal({
 			backdrop: 'static',
 			keyboard: false
 		})
-		if ($('#serviceNote').find('.myactive')) {
-			var selectedNote = $("#selectTr tr.myactive td");
-			$scope.sources = {
-					sourceIP: selectedNote.eq(0).text(),
-					sourceModel: selectedNote.eq(1).text(),
-					sourceDescription: selectedNote.eq(2).text(),
-					comments: selectedNote.eq(4).text(),
-					dueData: selectedNote.eq(5).text(),
-			}
-		}
 	}
 
 	$scope.signOut = function(){
@@ -68,43 +74,59 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 			});
 	}
 
-  $scope.clickOnTabComputers = function(){
-    $http.get("/welcome/computers").then(function(response){
-			console.log(response.data);
+	$scope.clickOnTabComputers = function(){
+		$http.get("/welcome/computers").then(function(response){
 			$scope.computers = response.data;
 		});
-  }
-}])
+	}
 
+	$scope.addComputers = function(){
+		var newRow = {
+			computerIP: "IP",
+			computerName: "Имя",
+			computerDescription: "Описание",
+			owner: "Владелец"
+		}
+
+		$scope.computers.push(newRow)
+	}
+
+	$scope.clickOnRowComputersTable = function($index, event, n){
+		console.log(n);
+		console.log($index);
+		console.log(event.target.id);
+	}
+	$scope.clickOnRowComputersTable2 = function($index, $event, n){
+		console.log(n);
+		console.log($index);
+		console.log($event.target);
+	}
+}])
 welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$window', function($document, $scope, $http, $window) {
 	$scope.regexSourceIP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+  $scope.sourceType = undefined;
 
-	$scope.addSource = function() { POSTRequest('/welcome/sources/add-source', getFormInput($scope), $http) }
- 	$scope.updateSource = function(){ POSTRequest('/welcome/sources/update-source', getFormInput($scope), $http) }
-	$scope.deleteSource = function(){ POSTRequest('/welcome/sources/delete-source', getFormInput($scope), $http)	}
+	$scope.addSource = function() {POSTRequest('/welcome/sources/add-source', getFormInput($scope, $scope.addSource), $http)}
+ 	$scope.updateSource = function(){POSTRequest('/welcome/sources/update-source', getFormInput($scope, $scope.sources), $http)}
+	$scope.deleteSource = function(){POSTRequest('/welcome/sources/delete-source', getFormInput($scope, $scope.sources), $http)}
+  $scope.removeFromReservation = function(){POSTRequest('/welcome/sources/remove-from-reservation', getFormInput($scope, $scope.sources), $http)}
 
-	$scope.showCheckDeleteSource = function(){
-		$('#checkDeleteSource').modal({
-			backdrop: 'static',
-			keyboard: false
-		})
-	}
- 	function getFormInput($scope){
+ 	function getFormInput($scope, args){
 		var sourceInfo = {
-			sourceIp: $scope.sources.sourceIP,
-			sourceModel: $scope.sources.sourceModel,
-			sourceDescription: $scope.sources.sourceDescription,
-			comments: $scope.sources.comments
+			sourceIp: args.sourceIP,
+			sourceModel: args.sourceModel,
+			sourceDescription: args.sourceDescription,
+			comments: args.comments
 		}
-		if ($scope.isReserv){
-			sourceInfo.dueData = $scope.sources.dueData;
-		}
+    if ($scope.sourceType == "PTZ"){
+      sourceInfo.sourceType = "PTZ";
+    } else if ($scope.sourceType == "Stationary") {
+      sourceInfo.sourceType = "Stationary";
+    }
+    if (args.dueData != "" && args.dueData != undefined)
+		   sourceInfo.dueData = args.dueData;
 		return sourceInfo;
  	}
-	$scope.closeSourceInfoModal = function(){
-		$('#myModal').modal('hide');
-		$scope.isReserv = false;;
-	}
 
  	function POSTRequest(url, sourceInfo, $http){
 		$http.post(url, sourceInfo).then(function(){
@@ -118,4 +140,18 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
 				$scope.addSourceError = "При добавлении\\обновлении источника произошла ошибка с кодом " + response.status;
 		})
 	}
+
+	$scope.showCheckDeleteSource = function(){
+    /*Показать диалоговое окно подтверждения удаления*/
+		$('#checkDeleteSource').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
+	}
+
+  $scope.closeSourceInfoModal = function(viewId){
+    /*Закрыть диалоговое окно*/
+    $(viewId).modal('hide');
+    $scope.isReserv = false;;
+  }
 }])

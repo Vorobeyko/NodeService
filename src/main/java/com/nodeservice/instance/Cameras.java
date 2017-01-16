@@ -52,6 +52,8 @@ public class Cameras implements Serializable{
     private String sourceModel;
     @Column(name = "SourceDescription")
     private String sourceDescription;
+    @Column(name = "SourceType")
+    private String sourceType;
     @Column(name = "OwnBy")
     private String ownBy;
     @Column(name = "Comments")
@@ -68,10 +70,11 @@ public class Cameras implements Serializable{
         this.sourceId = sourceId;
     }
 
-    public Cameras(String sourceIp, String sourceModel, String sourceDescription, String ownBy, String comments, Date dueData, String state) {
+    public Cameras(String sourceIp, String sourceModel, String sourceDescription, String sourceType, String ownBy, String comments, Date dueData, String state) {
         this.sourceIp = sourceIp;
         this.sourceModel = sourceModel;
         this.sourceDescription = sourceDescription;
+        this.sourceType = sourceType;
         this.ownBy = ownBy;
         this.comments = comments;
         this.dueData = dueData;
@@ -91,12 +94,6 @@ public class Cameras implements Serializable{
     public Cameras() {
     }
 
-    public void setSourceId (Integer sourceId){ this.sourceId = sourceId; }
-
-    public void setSourceIp (String source_ip){ this.sourceIp = source_ip; }
-
-    public void setSourceModel (String source_model){ this.sourceModel = source_model;}
-
     public Integer getSourceId (){
         return sourceId;
     }
@@ -113,16 +110,12 @@ public class Cameras implements Serializable{
         return sourceDescription;
     }
 
-    public void setSourceDescription(String sourceDescription) {
-        this.sourceDescription = sourceDescription;
+    public String getSourceType() {
+        return sourceType;
     }
 
     public String getOwnBy() {
         return ownBy;
-    }
-
-    public void setOwnBy(String ownBy) {
-        this.ownBy = ownBy;
     }
 
     public String getComments() {
@@ -134,28 +127,46 @@ public class Cameras implements Serializable{
 
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
     public Date getDueData() {
         return dueData;
-    }
-
-    public void setDueData(Date dueData) {
-        this.dueData = dueData;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public Boolean getDeletedSource() {
         return deletedSource;
+    }
+
+    public void setSourceId (Integer sourceId){ this.sourceId = sourceId; }
+
+    public void setSourceIp (String source_ip){ this.sourceIp = source_ip; }
+
+    public void setSourceModel (String source_model){ this.sourceModel = source_model;}
+
+    public void setSourceDescription(String sourceDescription) {
+        this.sourceDescription = sourceDescription;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public void setOwnBy(String ownBy) {
+        this.ownBy = ownBy;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public void setDueData(Date dueData) {
+        this.dueData = dueData;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public void setDeletedSource(Boolean deletedSource) {

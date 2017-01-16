@@ -34,26 +34,30 @@ public class ComputersDBO implements IDataBaseProvider<Computers> {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
-    public String update(Cameras cameras, String authorizedUser) {
+    public String update(Computers cameras, String authorizedUser) {
         return null;
     }
 
     @Override
-    public String add(Cameras cameras, String authorizedUser) {
+    public String add(Computers cameras, String authorizedUser) {
         return null;
     }
 
     @Override
-    public void delete(Cameras cameras) {
+    public void removeFromReservation(Computers cameras) {
+
+    }
+
+    @Override
+    public void delete(Computers cameras) {
 
     }
 
     @Override
     public List<Computers> select() {
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = "SELECT count(*) AS id FROM Computers";
+        String sqlQuery = "SELECT count(*) AS id FROM computers";
         SQLQuery query = session.createSQLQuery(sqlQuery).addScalar("id", LongType.INSTANCE);
         List<Long> result = query.list();
         Long count = result.get(0);

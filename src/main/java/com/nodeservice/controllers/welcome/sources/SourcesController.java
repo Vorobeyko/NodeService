@@ -22,7 +22,7 @@ public class SourcesController {
     private final Logger _log = LogManager.getLogger(this.getClass());
 
     @Autowired
-    IDataBaseProvider<Cameras> dataBaseProvider = new PtzDBO();
+    private IDataBaseProvider<Cameras> dataBaseProvider = new PtzDBO();
 
     /**
      * Метод для обновления источника
@@ -33,7 +33,7 @@ public class SourcesController {
     @RequestMapping(value = "/welcome/sources/{operation}",
             method = RequestMethod.POST)
     @ResponseBody
-    public void updateSource(@RequestBody Cameras cameras,
+    public void source(@RequestBody Cameras cameras,
                              @CookieValue(value = "username") String username,
                              HttpServletResponse response,
                              @PathVariable("operation") String operation) {
@@ -50,6 +50,9 @@ public class SourcesController {
                     updateSource = dataBaseProvider.update(cameras, "");
                 operationResponse(updateSource, response);
                 break;
+            case "remove-from-reservation":
+                dataBaseProvider.removeFromReservation(cameras);
+                break;
             case "delete-source":
                 dataBaseProvider.delete(cameras);
                 break;
@@ -57,7 +60,6 @@ public class SourcesController {
                 _log.error("Запрашиваемая операция не распозвнана");
         }
     }
-
 
     /**
      * Метод прослушивающий /getNote
@@ -90,9 +92,19 @@ public class SourcesController {
      * @param response
      */
     private void operationResponse(String operation, HttpServletResponse response){
-        if (operation.equals("success")) response.setStatus(HttpServletResponse.SC_OK); //Код 200 - Устройство успещно обновлено
-        else if (operation.equals("failed"))response.setStatus(601); //Код ошибки 601 - Устройство уже добавлено в БД
-        else if (operation.equals("error"))response.setStatus(602); //Код ошибки 602 - Произошла одна из известных ошибок NullPointerException или NamingException
-        else if (operation.equals("unknown")) response.setStatus(603); //Код ошибки 603 - Неизвестная ошибка, источник не добавлен
+        switch (operation) {
+            case "success":
+                response.setStatus(HttpServletResponse.SC_OK); //Код 200 - Устройство успещно обновлено
+                break;
+            case "failed":
+                response.setStatus(601); //Код ошибки 601 - Устройство уже добавлено в БД
+                break;
+            case "error":
+                response.setStatus(602); //Код ошибки 602 - Произошла одна из известных ошибок NullPointerException или NamingException
+                break;
+            case "unknown":
+                response.setStatus(603); //Код ошибки 603 - Неизвестная ошибка, источник не добавлен
+                break;
+        }
     }
 }

@@ -43,7 +43,7 @@ table { min-width: 100% }
 table tr { cursor: pointer }
 table thead tr{ cursor: inherit }
 table td.tdDescription{ width: 24% }
-#th-Comments{ width: 400px }
+#th-Comments{ word-wrap: break-word; }
 .busy-tr{ background-color: #d9534f }
 .free-tr{ background-color: #5cb85c }
 .modal-dialog{ width: 506px!important }
@@ -131,3 +131,8 @@ transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .min-padding{ padding:1px!important }
 .max-padding{ padding:8px }
+.btn-add-computers-node{
+  float: left;
+  position: relative;
+  margin: 5px;
+}

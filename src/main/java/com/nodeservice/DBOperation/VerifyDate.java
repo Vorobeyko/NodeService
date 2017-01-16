@@ -48,8 +48,10 @@ public class VerifyDate implements IVerifyDate {
             Cameras source = (Cameras) session.get(Cameras.class, i);
             if (source.getDueData() != null) {
                 if (new Date().after(source.getDueData())) {
-                    String stringSQLQuery = "UPDATE sourceinfo SET OwnBy ='', DueData=NULL, State='free' WHERE SourceId = " + source.getSourceId();
+                    String stringSQLQuery = "UPDATE sourceinfo SET OwnBy ='', DueData=NULL, Comments='', State='free' WHERE SourceId = " + source.getSourceId();
                     SQLQuery sqlUpdateQuery = session.createSQLQuery(stringSQLQuery);
+                    sqlUpdateQuery.executeUpdate();
+                    _log.info(stringSQLQuery);
                     try {
                         MailSender mailSender = new MailSender(myProperties.getProperty("SENDER"), myProperties.getProperty("PASSWORD"));
                         ActiveDirectory ad = new ActiveDirectory();
@@ -63,8 +65,6 @@ public class VerifyDate implements IVerifyDate {
                         }else
                             _log.error("Сообщение отправлено с ошибкой. Вероятно, что пользователя с именем " + source.getOwnBy() + " в базе ActiveDirectory не существует");
 
-                        sqlUpdateQuery.executeUpdate();
-                        _log.info(stringSQLQuery);
                     } catch (NullPointerException e){
                         e.printStackTrace();
                         _log.error("Ошибка при отапрвалении сообщения пользователю");

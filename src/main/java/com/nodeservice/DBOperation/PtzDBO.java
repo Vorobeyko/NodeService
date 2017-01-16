@@ -48,19 +48,20 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     public String update(Cameras cameras, String authorizedUser) {
         Session session = sessionFactory.getCurrentSession();
         try {
-            String stringSQLQuery =
-                String.format(
-                    "UPDATE sourceinfo " +
-                            "SET SourceModel='%s', SourceDescription='%s', OwnBy='%s',  Comments='%s', DueData=%s, State='%s'" +
-                            " WHERE SourceIp='%s'",
-                        cameras.getSourceModel(),
-                        cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "\'\'",
+            String stringSQLQuery = String.format("UPDATE sourceinfo " + "SET SourceModel='%s', SourceDescription='%s', Comments='%s'",
+                    cameras.getSourceModel(),
+                    cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "",
+                    cameras.getComments() != null ? cameras.getComments() : "");
+
+            if (cameras.getDueData() != null){
+                stringSQLQuery += String.format(", OwnBy='%s', DueData=%s, State='%s'",
                         getStringOwnBy(cameras.getDueData(), authorizedUser),
-                        cameras.getComments() != null ? cameras.getComments() : "\'\'",
                         getStringDueData(cameras.getDueData()),
-                        getStringState(cameras.getDueData()),
-                        cameras.getSourceIp()
-                    );
+                        getStringState(cameras.getDueData()));
+            }
+
+            stringSQLQuery += String.format(" WHERE SourceIp='%s'",  cameras.getSourceIp());
+
             _log.info(stringSQLQuery);
             SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
             sqlQuery.executeUpdate();
@@ -96,41 +97,35 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
         SQLQuery query = session.createSQLQuery(selectCount).addScalar("id", LongType.INSTANCE);
         List<Long> result = query.list();
         Long count = result.get(0);
-        Boolean existNote = false;
         try {
             for (int i = 1; i < count + 1; i++) {
                 Cameras source = (Cameras) session.get(Cameras.class, i);
                 if (cameras.getSourceIp().equals(source.getSourceIp())) {
-                    existNote = true;
                     _log.info("Устройство с IP-адресом " + cameras.getSourceIp() + " уже добавлен в Базу Данных. Вызвана ошибка с кодом 601");
                     return "failed";// Источник с таким IP найден в БД, возвращаем failed
                 }
             }
+            String addSourceSQL = String.format(
+                    "INSERT INTO sourceinfo (SourceId, SourceIp, SourceModel, SourceDescription, SourceType, Comments, OwnBy, State, DeletedSource) " +
+                            "VALUES ('%s','%s','%s','%s','%s','%s','%s','free',%s)",
+                    count+1,
+                    cameras.getSourceIp(),
+                    cameras.getSourceModel(),
+                    cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "",
+                    cameras.getSourceType(),
+                    cameras.getComments() != null ? cameras.getComments() : "",
+                    getStringOwnBy(cameras.getDueData(), authorizedUser),
+                    "b\'0\'"
+            );
+            _log.info(addSourceSQL);
 
-            if (!existNote){
-                String addSourceSQL = String.format(
-                        "INSERT INTO sourceinfo (SourceId, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData, State, DeletedSource) " +
-                                "VALUES ('%s','%s','%s','%s','%s','%s',%s,'%s',%s)",
-                        count+1,
-                        cameras.getSourceIp(),
-                        cameras.getSourceModel(),
-                        cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "\'\'",
-                        cameras.getComments() != null ? cameras.getComments() : "\'\'",
-                        getStringOwnBy(cameras.getDueData(), authorizedUser),
-                        getStringDueData(cameras.getDueData()),
-                        getStringState(cameras.getDueData()),
-                        "b\'0\'"
-                );
-                _log.info(addSourceSQL);
+            SQLQuery sqlQuery = session.createSQLQuery(addSourceSQL);
+            sqlQuery.executeUpdate();
 
-                SQLQuery sqlQuery = session.createSQLQuery(addSourceSQL);
-                sqlQuery.executeUpdate();
-
-                Cameras camera = getCameras(session, cameras.getSourceIp());
-                setHistory(camera,session);
-                _log.info("Устройство с IP-адресом " + cameras.getSourceIp() + " успешно добавлен");
-                return "success";// Все удачно добавлено, возвращаем success
-            }
+            Cameras camera = getCameras(session, cameras.getSourceIp());
+            setHistory(camera,session);
+            _log.info("Устройство с IP-адресом " + cameras.getSourceIp() + " успешно добавлен");
+            return "success";// Все удачно добавлено, возвращаем success
         } catch (NullPointerException e){
             _log.error("Произошла ошибка при добавлении устройства " + e);
             return "error";//ошибка, возвращаем error
@@ -138,8 +133,28 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             e.printStackTrace();
             return "error";//ошибка, возвращаем error
         }
-        _log.warn("При добавлении устройства произошла неизвестная ошибка. Устройство не добавлено");
-        return "unknown";//Неизвестная причина ошибки
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void removeFromReservation(Cameras cameras){
+        Session session = sessionFactory.getCurrentSession();
+        if (cameras.getDueData() != null) {
+            String stringSQLQuery = String.format(
+                    "UPDATE sourceinfo " +
+                            "SET DueData=NULL, State='free' " +
+                            "WHERE SourceIp='%s'",
+                    cameras.getSourceIp()
+            );
+
+            _log.info(stringSQLQuery);
+            SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
+            sqlQuery.executeUpdate();
+        }
+        else
+            _log.info("Срок бронирования для источника " + cameras.getSourceIp() + " не указан");
     }
 
     /**
@@ -151,7 +166,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
         Session session = sessionFactory.getCurrentSession();
         String stringSQLQuery = String.format(
                 "UPDATE sourceinfo " +
-                        "SET deletedSource=b'1' " +
+                        "SET DeletedSource=b'1' " +
                         "WHERE SourceIp='%s'",
                 cameras.getSourceIp()
         );
@@ -181,6 +196,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
                                     source.getSourceIp(),
                                     source.getSourceModel(),
                                     source.getSourceDescription(),
+                                    source.getSourceType(),
                                     source.getOwnBy(),
                                     source.getComments(),
                                     source.getDueData(),
@@ -216,11 +232,11 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     }
 
     @Override
-    public List<History> getHistory(String item){
+    public List<History> getHistory(String sourceIp){
         Session session = sessionFactory.getCurrentSession();
         String sqlQuery = String.format(
                 "Select * FROM history WHERE SourceIp = '%s' ORDER BY LastUpdated DESC LIMIT 5",
-                item
+                sourceIp
         );
         SQLQuery selectHistoryNode = session.createSQLQuery(sqlQuery);
         selectHistoryNode.addEntity(History.class);
@@ -277,9 +293,8 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             if (DueData == null) {
                 _log.error("Значение даты равно null, что некорректно для выполнения запроса на обновление или добавление источника.");
                 return "NULL";
-            } else {
+            } else
                 return "\'" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DueData) + "\'";
-            }
     }
 
     /**
@@ -289,11 +304,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
      * @return State
      */
     private String getStringState(Date DueData){
-        if (DueData != null) {
-            return "busy";
-        }
-        else {
-            return "free";
-        }
+        if (DueData != null) return "busy";
+        else return "free";
     }
 }

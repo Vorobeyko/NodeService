@@ -9,11 +9,13 @@ import java.util.List;
  */
 public interface IDataBaseProvider<T> {
 
-    String update(Cameras cameras, String authorizedUser);
+    String update(T cameras, String authorizedUser);
 
-    String add(Cameras cameras, String authorizedUser);
+    String add(T cameras, String authorizedUser);
 
-    void delete(Cameras cameras);
+    void removeFromReservation(T cameras);
+
+    void delete(T cameras);
 
     List<T> select();
 
