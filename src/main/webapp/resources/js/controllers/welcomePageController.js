@@ -129,9 +129,9 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', '$win
  	}
 
  	function POSTRequest(url, sourceInfo, $http){
-		$http.post(url, sourceInfo).then(function(){
+		$http.post(url, sourceInfo).then(function(response){
 			$window.location.href = '/welcome';
-		}, function(){
+		}, function(response){
 			if(response.status == 601){
 				$scope.addSourceError = "Устройство уже добавленно в БД";
 				console.log("Код ошибки " + response.status + " - устройство уже добавлено в БД.");
