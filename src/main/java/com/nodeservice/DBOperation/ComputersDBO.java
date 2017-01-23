@@ -1,6 +1,5 @@
 package com.nodeservice.DBOperation;
 
-import com.nodeservice.instance.Cameras;
 import com.nodeservice.instance.Computers;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -45,7 +44,7 @@ public class ComputersDBO implements IDataBaseProvider<Computers> {
     }
 
     @Override
-    public void removeFromReservation(Computers cameras) {
+    public void removeFromReservation(Computers cameras, String username) {
 
     }
 

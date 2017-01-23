@@ -1,7 +1,6 @@
 package com.nodeservice.DBOperation;
 
-import com.nodeservice.instance.Cameras;
-
+import javax.naming.NamingException;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public interface IDataBaseProvider<T> {
 
     String add(T cameras, String authorizedUser);
 
-    void removeFromReservation(T cameras);
+    void removeFromReservation(T cameras, String username) throws NamingException;
 
     void delete(T cameras);
 

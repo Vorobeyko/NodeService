@@ -25,6 +25,8 @@ import java.util.List;
 public class VerifyDate implements IVerifyDate {
     private final Logger _log = LogManager.getLogger(this.getClass());
     private SessionFactory sessionFactory;
+    //private Environment myProperties;
+    @Autowired
     private Environment myProperties;
 
     public VerifyDate(){
@@ -57,8 +59,8 @@ public class VerifyDate implements IVerifyDate {
                         ActiveDirectory ad = new ActiveDirectory();
                         String userEmail = ad.getUsersEmail(source.getOwnBy());
                         if (userEmail != null) {
-                            mailSender.send("Время бронирования источника с IP = " + source.getSourceIp() + " вышло.", //Тема письм
-                                    "<h2>Время бронирования источника с IP = " + source.getSourceIp() + " вышло.</h2>", // Текст письма
+                            mailSender.send("Время бронирования вышло.", //Тема письм
+                                    "Время бронирования источника с IP = " + source.getSourceIp() + " вышло.", // Текст письма
                                     myProperties.getProperty("SENDER"), // От кого отправлять
                                     userEmail); // Кому?
                             _log.info("Сообщение успешно отправлено: " + userEmail);

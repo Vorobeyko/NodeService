@@ -19,4 +19,4 @@ welcomePage.directive('clickNote', function(){
 	return{
 		templateUrl: 'pagetemplate/change-sources-dialog.html'
 	}
-})
+});

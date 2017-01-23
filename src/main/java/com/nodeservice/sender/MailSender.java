@@ -38,13 +38,13 @@ public class MailSender {
             }
         });
         try {
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
             //от кого
             message.setFrom(new InternetAddress(username));
             //кому
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             //тема сообщения
-            message.setSubject(subject);
+            message.setSubject("NodeService: " + subject, "utf-8");
             //текст
             //message.setText(text);
             message.setContent(text, "text/html; charset=utf-8");

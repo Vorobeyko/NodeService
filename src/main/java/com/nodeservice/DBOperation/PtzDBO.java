@@ -1,8 +1,10 @@
 package com.nodeservice.DBOperation;
 
 import com.nodeservice.AD.ActiveDirectory;
+import com.nodeservice.Configuration.Properties;
 import com.nodeservice.instance.Cameras;
 import com.nodeservice.instance.History;
+import com.nodeservice.sender.MailSender;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
@@ -10,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.LongType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,9 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     private SessionFactory sessionFactory;
     private SimpleDateFormat formatCur = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private String formatCurDate = formatCur.format(new Date());
+
+    @Autowired
+    private Environment myProperties = Properties.env;
 
     /**
      *
@@ -101,6 +107,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             for (int i = 1; i < count + 1; i++) {
                 Cameras source = (Cameras) session.get(Cameras.class, i);
                 if (cameras.getSourceIp().equals(source.getSourceIp())) {
+                    //TODO: Проверить флаг DeletedSource и если сорс удален, то восстановить его
                     _log.info("Устройство с IP-адресом " + cameras.getSourceIp() + " уже добавлен в Базу Данных. Вызвана ошибка с кодом 601");
                     return "failed";// Источник с таким IP найден в БД, возвращаем failed
                 }
@@ -139,19 +146,41 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
      *
      */
     @Override
-    public void removeFromReservation(Cameras cameras){
+    public void removeFromReservation(Cameras cameras, String username) throws NamingException {
         Session session = sessionFactory.getCurrentSession();
         if (cameras.getDueData() != null) {
             String stringSQLQuery = String.format(
                     "UPDATE sourceinfo " +
-                            "SET DueData=NULL, State='free' " +
+                            "SET DueData=NULL, OwnBy='', Comments='', State='free' " +
                             "WHERE SourceIp='%s'",
                     cameras.getSourceIp()
             );
+            ActiveDirectory ad = new ActiveDirectory();
 
-            _log.info(stringSQLQuery);
+            SQLQuery result = session.createSQLQuery(String.format("SELECT OwnBy FROM SourceInfo WHERE SourceIp='%s'", cameras.getSourceIp()));
+            List getOwnByFromDB = result.list(); // В переменной хранится OwnBy текущего сорса
+
+            String toEmail = ad.getUsersEmail(getOwnByFromDB.get(0).toString()),
+                    fullName = ad.getNameUser(username);
+
             SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
-            sqlQuery.executeUpdate();
+            if (sqlQuery.executeUpdate()>0){
+                _log.info(stringSQLQuery);
+                MailSender mailSender = new MailSender(myProperties.getProperty("SENDER"), myProperties.getProperty("PASSWORD"));
+                if (!fullName.equals(getOwnByFromDB.get(0).toString()) && toEmail != null) {
+                    mailSender.send(
+                            "Вам сбросили бронирование.",
+                            "Пользователь " + fullName + " сбросил Ваше бронирование для устройства " + cameras.getSourceIp() + "!",
+                            myProperties.getProperty("SENDER"),
+                            toEmail);
+                    _log.info("Сообщение отправлено пользователю " + getOwnByFromDB.get(0).toString());
+                }
+                else {
+                    _log.error("При сбросе бронирования другим пользователем произошла ошибка NullPointerException. Парамет toEmail не может быть равен null");
+                }
+            }
+            else
+                _log.error(stringSQLQuery);
         }
         else
             _log.info("Срок бронирования для источника " + cameras.getSourceIp() + " не указан");

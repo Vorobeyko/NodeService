@@ -38,12 +38,12 @@
       <!-- ------Кнопки для добавления, обновления и удаления записей ------ -->
       <div class="input-group">
           <button type="submit"  class="btn btn-success" id="succes"
-            ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid || sourceType == undefined"
+            ng-disabled="sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid || (sourceType == undefined || sourceType == false)"
             ng-click="addSource()">
               <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить
           </button>
-          <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal('#add-sources-dialog')"">
-              <span class="glyphicon glyphicon-remove" " style="margin-right: 5px;" aria-hidden="true"></span>Закрыть
+          <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal('#add-sources-dialog')">
+              <span class="glyphicon glyphicon-remove"  style="margin-right: 5px;" aria-hidden="true"></span>Закрыть
           </div>
       </div>
       <p id="addSourceError">{{addSourceError}}</p>

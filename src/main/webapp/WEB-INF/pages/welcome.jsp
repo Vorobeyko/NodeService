@@ -18,6 +18,11 @@
     <script src="<c:url value="/resources/js/factories.js"/>"></script>
     <script src="<c:url value="/resources/js/directives.js"/>"></script>
     <title>Nodes Page Java</title>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </head>
 <body
   ng-controller="WelcomePageBody">
@@ -25,18 +30,23 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
   <script src="https://code.angularjs.org/1.5.8/angular-cookies.js"></script>
-<ul class="nav nav-tabs header" role="tablist">
-    <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz" role="tab" data-toggle="tab">Поворотные камеры</a></li>
+
+  <ul class="nav nav-tabs header" role="tablist">
+    <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz"  role="tab" data-toggle="tab">Поворотные камеры</a></li>
     <li role="presentation"><a href="#stationary" aria-controls="stationary" role="tab" data-toggle="tab">Стационарные камеры</a></li>
     <!-- <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab"
       ng-click="clickOnTabComputers()">Компьютеры</a>
     </li> -->
       <button type="submit"  class="btn btn-success btn-elvees" id="succes"
-        ng-click="showDialogWithSourceInfo(null,'#add-sources-dialog')">
+        ng-click="showDialogWithSourceInfo(null,'#add-sources-dialog')" data-toggle="tooltip" data-placement="bottom" title="Добавить новое устройство">
           <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить устройство
       </button>
+    <button type="submit"  class="btn btn-info btn-elvees"
+            ng-click="updateTable()" data-toggle="tooltip" data-placement="bottom" title="Обновить содержимое таблицы">
+        <span class="glyphicon glyphicon-refresh" id="shows" aria-hidden="true"></span>
+    </button>
     <button type="sudmit" class="btn btn-warning btn-group-sm btn-elvees show-modal"
-      ng-click="showHistory()">
+      ng-click="showHistory()" data-toggle="tooltip" data-placement="bottom" title="Посмотреть историю устройств">
         <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
     </button>
     <div class="current-user">
@@ -56,7 +66,7 @@
   <div role="tabpanel" class="tab-pane active" id="ptz">
     <table class="table table-bordered sortIp" id="selectTr">
       <thead>
-      <tr class="row">
+      <tr>
         <th>IP</th>
         <th>Модель</th>
         <th>Описание</th>
@@ -70,7 +80,7 @@
         <tr name="data"
           ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
           ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'}"
-          ng-click="showDialogWithSourceInfo(sourceInfo, '#change-sources-dialog')" click-note class="row">
+          ng-click="showDialogWithSourceInfo(sourceInfo, '#change-sources-dialog')" click-note >
             <td><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
             <td>{{sourceInfo.sourceModel}}</td>
             <td>{{sourceInfo.sourceDescription}}</td>
@@ -89,10 +99,10 @@
         <th>IP</th>
         <th>Модель</th>
         <th>Описание</th>
-        <th>Забронировал</span></th>
+        <th>Забронировал</th>
         <th>Комментарий</th>
         <th>Срок</th>
-        <th>Состояние</span></th>
+        <th>Состояние</th>
       </tr>
       </thead>
       <tbody id="serviceNote" >
@@ -175,7 +185,16 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" ng-click="closeHistoryModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="gridSystemModalLabel">История для выбранного источника: {{historySelectedSource}}</h4>
+            <h4 class="modal-title" id="gridSystemModalLabel">История для выбранного источника:
+                <select class="form-control form-control-override" ng-model="data.singleSelect" ng-change="showHistoryForSource(data.singleSelect)">
+                    <optgroup label="Поворотные видеокамеры">
+                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'}" >{{sourceInfo.sourceIp}}</option>
+                    </optgroup>
+                    <optgroup label="Стационарные видеокамеры">
+                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'Stationary'}" >{{sourceInfo.sourceIp}}</option>
+                    </optgroup>
+                </select>
+            </h4>
           </div>
             <div role="tabpanel" class="tab-pane active" id="home" style="    margin: 10px;">
                 <div>
@@ -194,8 +213,8 @@
                         <tbody id="historyTable">
                           <tr name="data"
                             ng-repeat="history in sourceHistory">
-                              <td>{{history.lastUpdated | date:'yyyy-MM-dd HH:mm:ss'}}</a></td>
-                              <td>{{history.sourceIp}}</a></td>
+                              <td>{{history.lastUpdated | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                              <td>{{history.sourceIp}}</td>
                               <td>{{history.sourceModel}}</td>
                               <td class="tdDescription">{{history.sourceDescription}}</td>
                               <td>{{history.ownBy}}</td>

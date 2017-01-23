@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class SourcesController {
     public void source(@RequestBody Cameras cameras,
                              @CookieValue(value = "username") String username,
                              HttpServletResponse response,
-                             @PathVariable("operation") String operation) {
+                             @PathVariable("operation") String operation) throws NamingException {
         switch (operation){
             case "add-source":
                 String addSource = dataBaseProvider.add(cameras, username);
@@ -51,7 +52,7 @@ public class SourcesController {
                 operationResponse(updateSource, response);
                 break;
             case "remove-from-reservation":
-                dataBaseProvider.removeFromReservation(cameras);
+                dataBaseProvider.removeFromReservation(cameras, username);
                 break;
             case "delete-source":
                 dataBaseProvider.delete(cameras);

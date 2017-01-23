@@ -57,8 +57,11 @@
                 ? null : showCheckDeleteSource()">
                 <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Удалить
             </div>
-            <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal('#change-sources-dialog')"">
+            <div id="close" class="btn btn-default"  style="margin-left: 5px;" ng-click="closeSourceInfoModal('#change-sources-dialog')">
                 <span class="glyphicon glyphicon-remove" " style="margin-right: 5px;" aria-hidden="true"></span>Закрыть
+            </div>
+            <div ng-show="isRequest" style="display:inline-block">
+                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="margin-left: 5px;" aria-hidden="true"></span>
             </div>
         </div>
         <p id="addSourceError">{{addSourceError}}</p>
