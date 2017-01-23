@@ -30,7 +30,6 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     private final Logger _log = LogManager.getLogger(this.getClass());
     private SessionFactory sessionFactory;
     private SimpleDateFormat formatCur = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private String formatCurDate = formatCur.format(new Date());
 
     @Autowired
     private Environment myProperties = Properties.env;
@@ -73,7 +72,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             sqlQuery.executeUpdate();
 
             Cameras camera = getCameras(session, cameras.getSourceIp());
-            setHistory(camera,session);
+            setHistory(camera,session,authorizedUser);
 
             _log.info("Обновление источника с IP-адресом " + cameras.getSourceIp() + " произошло успешно");
             return "success";// Все удачно добавлено, возвращаем success
@@ -130,7 +129,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             sqlQuery.executeUpdate();
 
             Cameras camera = getCameras(session, cameras.getSourceIp());
-            setHistory(camera,session);
+            setHistory(camera,session, authorizedUser);
             _log.info("Устройство с IP-адресом " + cameras.getSourceIp() + " успешно добавлен");
             return "success";// Все удачно добавлено, возвращаем success
         } catch (NullPointerException e){
@@ -146,7 +145,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
      *
      */
     @Override
-    public void removeFromReservation(Cameras cameras, String username) throws NamingException {
+    public void removeFromReservation(Cameras cameras, String authorizedUser) throws NamingException {
         Session session = sessionFactory.getCurrentSession();
         if (cameras.getDueData() != null) {
             String stringSQLQuery = String.format(
@@ -161,7 +160,7 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             List getOwnByFromDB = result.list(); // В переменной хранится OwnBy текущего сорса
 
             String toEmail = ad.getUsersEmail(getOwnByFromDB.get(0).toString()),
-                    fullName = ad.getNameUser(username);
+                    fullName = ad.getNameUser(authorizedUser);
 
             SQLQuery sqlQuery = session.createSQLQuery(stringSQLQuery);
             if (sqlQuery.executeUpdate()>0){
@@ -178,9 +177,13 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
                 else {
                     _log.error("При сбросе бронирования другим пользователем произошла ошибка NullPointerException. Парамет toEmail не может быть равен null");
                 }
+                Cameras camera = getCameras(session, cameras.getSourceIp());
+                setHistory(camera, session, authorizedUser);
             }
             else
                 _log.error(stringSQLQuery);
+
+
         }
         else
             _log.info("Срок бронирования для источника " + cameras.getSourceIp() + " не указан");
@@ -242,11 +245,12 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
      * @param cameras
      * @param session
      */
-    public void setHistory (Cameras cameras, Session session){
+    public void setHistory (Cameras cameras, Session session, String _authorizedUser) throws NamingException {
         String sqlQuery = String.format(
-                "INSERT INTO history (LastUpdated, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData)" +
-                    " values ('%s','%s','%s','%s','%s','%s',%s)",
-                formatCurDate,
+                "INSERT INTO history (LastUpdated, WhoUpdated, SourceIp, SourceModel, SourceDescription, Comments, OwnBy, DueData)" +
+                    " values ('%s','%s','%s','%s','%s','%s','%s',%s)",
+                formatCur.format(new Date()),//Форматирует текущую дату в формате yyyy-MM-dd HH:mm:ss
+                new ActiveDirectory().getNameUser(_authorizedUser),
                 cameras.getSourceIp(),
                 cameras.getSourceModel(),
                 cameras.getSourceDescription(),

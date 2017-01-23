@@ -20,6 +20,8 @@ public class History implements Serializable {
     private Integer ID;
     @Column(name = "LastUpdated")
     private Date lastUpdated;
+    @Column(name = "WhoUpdated")
+    private String whoUpdated;
     @Column(name = "SourceIp")
     private String sourceIp;
     @Column(name = "SourceModel")
@@ -95,5 +97,13 @@ public class History implements Serializable {
 
     public Date getDueData() {
         return dueData;
+    }
+
+    public String getWhoUpdated() {
+        return whoUpdated;
+    }
+
+    public void setWhoUpdated(String whoUpdated) {
+        this.whoUpdated = whoUpdated;
     }
 }

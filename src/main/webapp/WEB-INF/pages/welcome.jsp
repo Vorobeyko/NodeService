@@ -201,19 +201,21 @@
                     <table class="table table-bordered" id="selectTr">
                       <thead>
                       <tr>
-                        <th>Последнее обновление</th>
-                        <th>IP</th>
-                        <th>Модель</th>
-                        <th>Описание</th>
-                        <th style="width: 70px;">Забронировал</th>
-                        <th id="th-Comments">Комментарий</th>
-                        <th>Срок</th>
+                          <th>Последнее обновление</th>
+                          <th>Изменил</th>
+                          <th>IP</th>
+                          <th>Модель</th>
+                          <th>Описание</th>
+                          <th style="width: 70px;">Забронировал</th>
+                          <th id="th-Comments">Комментарий</th>
+                          <th>Срок</th>
                       </tr>
                       </thead>
                         <tbody id="historyTable">
                           <tr name="data"
                             ng-repeat="history in sourceHistory">
                               <td>{{history.lastUpdated | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                              <td>{{history.whoUpdated}}</td>
                               <td>{{history.sourceIp}}</td>
                               <td>{{history.sourceModel}}</td>
                               <td class="tdDescription">{{history.sourceDescription}}</td>
