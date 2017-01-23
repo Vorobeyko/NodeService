@@ -39,6 +39,8 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 	};
 
 	$scope.closeHistoryModal = function(){
+		$scope.data.singleSelect = "";
+        $scope.sourceHistory = null;
 		$('#historyModal').modal('hide')
 	};
 	/*
