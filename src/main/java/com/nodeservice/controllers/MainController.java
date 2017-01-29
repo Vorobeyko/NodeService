@@ -10,6 +10,7 @@ package com.nodeservice.controllers;
 import com.nodeservice.AD.ActiveDirectory;
 import com.nodeservice.DBOperation.*;
 import com.nodeservice.instance.User;
+import com.sun.javafx.sg.prism.NGShape;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,14 @@ public class MainController {
             modelAndView.setViewName("redirect:login");
             return modelAndView;
         }
+    }
+
+    @RequestMapping(value = "/faq",
+                    method = RequestMethod.GET)
+    public ModelAndView faq()
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("faq");
+        return modelAndView;
     }
 }

@@ -17,7 +17,7 @@
     <script src="<c:url value="/resources/js/controllers/welcomePageController.js"/>"></script>
     <script src="<c:url value="/resources/js/factories.js"/>"></script>
     <script src="<c:url value="/resources/js/directives.js"/>"></script>
-    <title>Nodes Page Java</title>
+    <title>Сервис для бронирования камер</title>
     <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -231,5 +231,15 @@
         </div>
     </div>
 </div>
+  <footer class="navbar-fixed-bottom footer bs-docs-footer">
+      <div class="container">
+          <p class="bs-docs-footer-p"><a href="mailto:avorobey@elvees.com">@Alexandr Vorobey</a></p>
+          <ul class="bs-docs-footer-links">
+              <li><a href="#">Предложить дороботку</a></li>
+              <li><hr width="1" size="5"></li>
+              <li><a href="/faq">FAQ</a></li>
+          </ul>
+      </div>
+  </footer>
 </body>
 </html>

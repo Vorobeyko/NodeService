@@ -154,3 +154,28 @@ transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     display: inline-block!important;
     width: 200px !important;
 }
+.bs-docs-footer{
+    color: #272629;
+    display: inline-block;
+    background-color: #eae7ee;
+}
+.bs-docs-footer-links {
+    padding-right: 0;
+    float: right;
+    margin-bottom: 20px;
+}
+.bs-docs-footer-links-left {
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+.bs-docs-footer-links li {
+    display: inline-block;
+}
+.bs-docs-footer-p{
+    float: left;
+    padding-left: 0;
+    padding-top: 25px;
+}
+.faq-container{
+    margin-top: 50px;
+}
