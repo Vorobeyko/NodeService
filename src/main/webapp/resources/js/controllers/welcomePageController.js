@@ -63,6 +63,13 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 		})
 	};
 
+	$scope.openFeedbackDialog = function (viewId) {
+        $(viewId).modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    };
+
 	$scope.signOut = function(){
 		$cookies.remove('username');
 		$window.location.href = '/login';
@@ -147,7 +154,7 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
 		$http.post(url, sourceInfo).then(function(response){
 			$scope.isRequest = false;
 			$scope.updateTable();
-            $scope.addSourceError = "";
+            $scope.addSourceError = "Операция успешно выполнена.";
 		}, function(response){
 			$scope.isRequest = false;
 			if(response.status == 601){
@@ -181,6 +188,8 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
     $scope.closeCheckDeleteSource = function (viewId){
         $(viewId).modal('hide');
     };
+
+
 /*
 ------------------------------
 End SourceOperations Controller

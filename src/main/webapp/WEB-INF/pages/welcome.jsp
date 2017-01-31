@@ -231,15 +231,22 @@
         </div>
     </div>
 </div>
-  <footer class="navbar-fixed-bottom footer bs-docs-footer">
-      <div class="container">
-          <p class="bs-docs-footer-p"><a href="mailto:avorobey@elvees.com">@Alexandr Vorobey</a></p>
-          <ul class="bs-docs-footer-links">
-              <li><a href="#">Предложить дороботку</a></li>
-              <li><hr width="1" size="5"></li>
-              <li><a href="/faq">FAQ</a></li>
-          </ul>
-      </div>
-  </footer>
+
+<footer class="navbar-fixed-bottom footer bs-docs-footer">
+  <div class="container">
+      <p class="bs-docs-footer-p"><a href="mailto:avorobey@elvees.com">@Alexandr Vorobey</a></p>
+      <ul class="bs-docs-footer-links">
+          <li><a href="#" ng-click="openFeedbackDialog('#feedback-dialog')">Предложить дороботку</a></li>
+          <li><hr width="1" size="5"></li>
+          <li><a href="/faq">FAQ</a></li>
+      </ul>
+  </div>
+</footer>
+
+<!-- Update Sources Dialog Template -->
+<div class="modal fade " id="feedback-dialog" tabindex="-1" role="dialog">
+  <div class="modal-dialog" feedback-dialog></div>
+</div>
+<!-- End Template -->
 </body>
 </html>

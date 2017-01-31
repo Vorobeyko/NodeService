@@ -1,6 +1,6 @@
 welcomePage.directive('clickNote', function(){
 	return {
-		link: function(scope, element, attrs){
+		link: function(scope, element){
 			element.on('mouseenter', function(){
 				element.css('background-color','#f0ad4e');
 			})
@@ -19,4 +19,9 @@ welcomePage.directive('clickNote', function(){
 	return{
 		templateUrl: 'pagetemplate/change-sources-dialog.html'
 	}
+})
+.directive('feedbackDialog', function(){
+    return{
+        templateUrl: 'pagetemplate/feedback-dialog.html'
+    }
 });

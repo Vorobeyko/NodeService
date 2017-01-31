@@ -53,17 +53,14 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     public String update(Cameras cameras, String authorizedUser) {
         Session session = sessionFactory.getCurrentSession();
         try {
-            String stringSQLQuery = String.format("UPDATE sourceinfo " + "SET SourceModel='%s', SourceDescription='%s', Comments='%s'",
+            String stringSQLQuery = String.format("UPDATE sourceinfo " + "SET SourceModel='%s', SourceDescription='%s', Comments='%s', OwnBy='%s', DueData=%s, State='%s'",
                     cameras.getSourceModel(),
                     cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "",
-                    cameras.getComments() != null ? cameras.getComments() : "");
-
-            if (cameras.getDueData() != null){
-                stringSQLQuery += String.format(", OwnBy='%s', DueData=%s, State='%s'",
-                        getStringOwnBy(cameras.getDueData(), authorizedUser),
-                        getStringDueData(cameras.getDueData()),
-                        getStringState(cameras.getDueData()));
-            }
+                    cameras.getComments() != null ? cameras.getComments() : "",
+                    getStringOwnBy(cameras.getDueData(), authorizedUser),
+                    getStringDueData(cameras.getDueData()),
+                    getStringState(cameras.getDueData())
+            );
 
             stringSQLQuery += String.format(" WHERE SourceIp='%s'",  cameras.getSourceIp());
 

@@ -6,6 +6,9 @@ body .preloaderClass {
     padding: 0;
     overflow: hidden;
 }
+body.faq {
+    display: inline;
+}
 .header{
   display: inline-block;
   width: 100%;
@@ -178,4 +181,19 @@ transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .faq-container{
     margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.btn-faq-previous{
+    margin: 5px;
+    position: fixed;
+}
+.faq-reservation-ul{}
+.faq-reservation-ul  img {
+    margin-left:auto;
+    margin-right:auto;
+    display: block;
+}
+.faq-reservation-ul  p{
+    text-align: center;
 }

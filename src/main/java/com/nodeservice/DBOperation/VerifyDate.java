@@ -69,7 +69,7 @@ public class VerifyDate implements IVerifyDate {
 
                     } catch (NullPointerException e){
                         e.printStackTrace();
-                        _log.error("Ошибка при отапрвалении сообщения пользователю");
+                        _log.error("Ошибка при отправалении сообщения пользователю");
                     } catch (NamingException e) {
                         e.printStackTrace();
                         _log.error("Ошибка в имени. Проблема с ActiveDirectory");
