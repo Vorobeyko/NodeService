@@ -62,9 +62,9 @@ public class Cameras implements Serializable{
     @JsonDeserialize(using=CustomerDateAndTimeDeserialize.class)
     private Date dueData;
     @Column(name = "State")
-    private String state;
+    private String state = "free";
     @Column(name = "DeletedSource")
-    private Boolean deletedSource;
+    private Boolean deletedSource = false;
 
     public Cameras(Integer sourceId) {
         this.sourceId = sourceId;

@@ -77,6 +77,7 @@
             </div>
         </div>
         <p id="addSourceError">{{addSourceError}}</p>
+        <p id="addSourceSuccess">{{addSourceSuccess}}</p>
         <!-- ------ Модальное окно для подтверждения удаления источника ------  -->
         <div class="modal fade" id="checkDeleteSource" tabindex="-1" role="dialog">
             <div class="modal-dialog checkDeleteSource">

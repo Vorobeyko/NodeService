@@ -129,7 +129,15 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
         $scope.closeCheckDeleteSource('#checkDeleteSource');
         $scope.closeSourceInfoModal('#change-sources-dialog');
  	};
- 	$scope.removeFromReservation = function(){ POSTRequest('/welcome/sources/remove-from-reservation', getFormInput($scope, $scope.sources), $http)};
+
+ 	$scope.removeFromReservation = function(){ POSTRequest('/welcome/sources/remove-from-reservation/', getFormInput($scope, $scope.sources), $http)};
+    $scope.sendFeedbackMessage = function () {
+    	console.log($scope.feedbackMessage);
+        var feedback = {
+            message:  $scope.feedbackMessage
+        };
+    	POSTRequest('/welcome/feedback-message', feedback, $http)
+    };
 
 
 	function getFormInput($scope, args){
@@ -151,10 +159,11 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
 
 	function POSTRequest(url, sourceInfo, $http){
 		$scope.isRequest = true;
+		console.log("Tyt");
 		$http.post(url, sourceInfo).then(function(response){
 			$scope.isRequest = false;
 			$scope.updateTable();
-            $scope.addSourceError = "Операция успешно выполнена.";
+            $scope.addSourceSuccess = "Операция успешно выполнена.";
 		}, function(response){
 			$scope.isRequest = false;
 			if(response.status == 601){
@@ -175,6 +184,7 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
 		if ($scope.addSource.sourceDescription != "") $scope.addSource.sourceDescription = "";
 		if ($scope.addSource.comments != "") $scope.addSource.comments = "";
 		if ($scope.addSourceError != "") $scope.addSourceError = "";
+        if ($scope.addSourceSuccess != "") $scope.addSourceSuccess = "";
 	};
 
     $scope.showCheckDeleteSource = function(){
@@ -188,8 +198,6 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
     $scope.closeCheckDeleteSource = function (viewId){
         $(viewId).modal('hide');
     };
-
-
 /*
 ------------------------------
 End SourceOperations Controller

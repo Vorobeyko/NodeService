@@ -17,7 +17,7 @@ public class History implements Serializable {
 
     @Id
     @Column(name = "ID")
-    private Integer ID;
+    private Integer ID = 0;
     @Column(name = "LastUpdated")
     private Date lastUpdated;
     @Column(name = "WhoUpdated")
@@ -34,6 +34,26 @@ public class History implements Serializable {
     private String comments;
     @Column(name = "DueData")
     private Date dueData;
+
+    public History(){};
+
+    public History (Date _lastUpdated,
+                    String _whoUpdated,
+                    String _sourceIp,
+                    String _sourceModel,
+                    String _sourceDescription,
+                    String _ownBy,
+                    String _comments,
+                    Date _dueData) {
+        this.lastUpdated = _lastUpdated;
+        this.whoUpdated = _whoUpdated;
+        this.sourceIp = _sourceIp;
+        this.sourceModel = _sourceModel;
+        this.sourceDescription = _sourceDescription;
+        this.ownBy = _ownBy;
+        this.comments = _comments;
+        this.dueData = _dueData;
+    };
 
     public void setID(Integer ID) {
         this.ID = ID;

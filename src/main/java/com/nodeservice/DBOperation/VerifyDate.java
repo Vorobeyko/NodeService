@@ -7,10 +7,9 @@ import com.nodeservice.instance.Cameras;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.type.LongType;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
 import java.util.Date;
-import java.util.List;
 
 @Repository
 @Transactional
@@ -41,29 +39,35 @@ public class VerifyDate implements IVerifyDate {
     @Override
     public void verify(){
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = "select count(*) as id from SourceInfo";
-        SQLQuery query = session.createSQLQuery(sqlQuery).addScalar("id", LongType.INSTANCE);
-        List<Long> result = query.list();
-        Long count = result.get(0);
+        Query query = session.createQuery("select count(*) from Cameras");
+        Long count = (Long)query.uniqueResult();
 
         for (int i = 1; i <= count; i++ ) {
             Cameras source = (Cameras) session.get(Cameras.class, i);
             if (source.getDueData() != null) {
                 if (new Date().after(source.getDueData())) {
-                    String stringSQLQuery = "UPDATE sourceinfo SET OwnBy ='', DueData=NULL, Comments='', State='free' WHERE SourceId = " + source.getSourceId();
-                    SQLQuery sqlUpdateQuery = session.createSQLQuery(stringSQLQuery);
+                    Query sqlUpdateQuery = session.createQuery("update Cameras set ownBy = :ownBy, dueData = :dueData, comments = :comments, state = :state " +
+                            "where sourceId = :sourceId");
+                    sqlUpdateQuery.setParameter("ownBy", "");
+                    sqlUpdateQuery.setParameter("dueData", null);
+                    sqlUpdateQuery.setParameter("comments", "");
+                    sqlUpdateQuery.setParameter("state", "free");
+                    sqlUpdateQuery.setParameter("sourceId",source.getSourceId());
+
                     sqlUpdateQuery.executeUpdate();
-                    _log.info(stringSQLQuery);
+
                     try {
                         MailSender mailSender = new MailSender(myProperties.getProperty("SENDER"), myProperties.getProperty("PASSWORD"));
                         ActiveDirectory ad = new ActiveDirectory();
                         String userEmail = ad.getUsersEmail(source.getOwnBy());
                         if (userEmail != null) {
+                        new Thread(() -> {
                             mailSender.send("Время бронирования вышло.", //Тема письм
                                     "Время бронирования источника с IP = " + source.getSourceIp() + " вышло.", // Текст письма
                                     myProperties.getProperty("SENDER"), // От кого отправлять
                                     userEmail); // Кому?
                             _log.info("Сообщение успешно отправлено: " + userEmail);
+                        }).start();
                         }else
                             _log.error("Сообщение отправлено с ошибкой. Вероятно, что пользователя с именем " + source.getOwnBy() + " в базе ActiveDirectory не существует");
 

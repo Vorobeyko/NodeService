@@ -44,10 +44,10 @@ public class SourcesController {
                 operationResponse(addSource, response);
                 break;
             case "update-source":
-                String updateSource = null;
+                String updateSource;
                 if (cameras.getOwnBy() == null || cameras.getOwnBy().equals(""))
                     updateSource = dataBaseProvider.update(cameras, username);
-                else
+                else //TODO: Убрать возможность сброса бронирования обновлением
                     updateSource = dataBaseProvider.update(cameras, "");
                 operationResponse(updateSource, response);
                 break;
@@ -70,8 +70,7 @@ public class SourcesController {
             method = RequestMethod.GET)
     @ResponseBody
     public List<Cameras> getNote(){
-        List<Cameras> selectSourceInfo = dataBaseProvider.select();
-        return selectSourceInfo;
+        return dataBaseProvider.select();
     }
 
     /**

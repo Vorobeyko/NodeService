@@ -28,5 +28,14 @@ public class DialogTemplate
     @ResponseBody
     public ModelAndView changeSourcesDialog(){
         return new ModelAndView("template\\change-sources-dialog");
+
+    }
+
+    @RequestMapping(value = "/pagetemplate/feedback-dialog",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView feedbackDialog(){
+        return new ModelAndView("template\\feedback-dialog");
+
     }
 }

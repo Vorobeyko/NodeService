@@ -34,12 +34,12 @@
   <ul class="nav nav-tabs header" role="tablist">
     <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz"  role="tab" data-toggle="tab">Поворотные камеры</a></li>
     <li role="presentation"><a href="#stationary" aria-controls="stationary" role="tab" data-toggle="tab">Стационарные камеры</a></li>
-    <!-- <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab"
-      ng-click="clickOnTabComputers()">Компьютеры</a>
-    </li> -->
+    <%--<li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab"--%>
+      <%--ng-click="clickOnTabComputers()">Компьютеры</a>--%>
+    <%--</li>--%>
       <button type="submit"  class="btn btn-success btn-elvees" id="succes"
         ng-click="showDialogWithSourceInfo(null,'#add-sources-dialog')" data-toggle="tooltip" data-placement="bottom" title="Добавить новое устройство">
-          <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить устройство
+          <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить камеру
       </button>
     <button type="submit"  class="btn btn-info btn-elvees"
             ng-click="updateTable()" data-toggle="tooltip" data-placement="bottom" title="Обновить содержимое таблицы">
@@ -234,9 +234,9 @@
 
 <footer class="navbar-fixed-bottom footer bs-docs-footer">
   <div class="container">
-      <p class="bs-docs-footer-p"><a href="mailto:avorobey@elvees.com">@Alexandr Vorobey</a></p>
+      <p class="bs-docs-footer-p"><a href="mailto:avorobey@elvees.com">@QA-Team</a></p>
       <ul class="bs-docs-footer-links">
-          <li><a href="#" ng-click="openFeedbackDialog('#feedback-dialog')">Предложить дороботку</a></li>
+          <li><a href="#" ng-click="openFeedbackDialog('#feedback-dialog')">Предложить фичу</a></li>
           <li><hr width="1" size="5"></li>
           <li><a href="/faq">FAQ</a></li>
       </ul>

@@ -8,12 +8,17 @@ package com.nodeservice.controllers;
  **/
 
 import com.nodeservice.AD.ActiveDirectory;
+import com.nodeservice.Configuration.Properties;
 import com.nodeservice.DBOperation.*;
+import com.nodeservice.instance.Feedback;
 import com.nodeservice.instance.User;
-import com.sun.javafx.sg.prism.NGShape;
+import com.nodeservice.sender.MailSender;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -24,6 +29,7 @@ import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Controller
 @EnableScheduling
 public class MainController {
@@ -33,6 +39,9 @@ public class MainController {
 
     @Autowired
     IVerifyDate db = new VerifyDate();
+
+    @Autowired
+    private Environment myProperties = Properties.env;
 
     /**
      * Планировщик, который каждые 5 сек. запускает метод для
@@ -103,5 +112,24 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("faq");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/welcome/feedback-message",
+            method=RequestMethod.POST)
+    @ResponseBody
+    public void sendFeedbackMessage(@RequestBody Feedback feedback,
+                                    @CookieValue(value = "username", required = false) String username){
+        MailSender mailSender = new MailSender(myProperties.getProperty("SENDER"), myProperties.getProperty("PASSWORD"));
+
+        new Thread(() -> {
+                    mailSender.send(
+                        "Предложение фичи\\фикса.",
+                        "Отправитель: "+ username + ". \n" +
+                                "Сообщение: " + feedback.message,
+                        myProperties.getProperty("SENDER"),
+                        myProperties.getProperty("VOROBEY_EMAIL")
+                    );
+        }).start();
+
     }
 }

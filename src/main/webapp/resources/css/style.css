@@ -41,7 +41,7 @@ body.faq {
   box-shadow: 0 0px 7px rgb(119, 111, 111);
 }*/
 .current-user { font-family: "Ubuntu" }
-.table { margin-bottom: 0!important }
+.table { margin-bottom: 65px!important }
 table { min-width: 100% }
 table tr { cursor: pointer }
 table thead tr{ cursor: inherit }
@@ -103,6 +103,11 @@ form#form button{ margin-right: 5px }
   color: #d9534f;
   margin-left: 10px;
   font-weight: bold;
+}
+#addSourceSuccess{
+    color: #1ad935;
+    margin-left: 10px;
+    font-weight: bold;
 }
 /*
 Tab - Computers

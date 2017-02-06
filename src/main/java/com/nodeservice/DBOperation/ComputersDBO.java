@@ -3,10 +3,9 @@ package com.nodeservice.DBOperation;
 import com.nodeservice.instance.Computers;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.type.LongType;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,10 +55,8 @@ public class ComputersDBO implements IDataBaseProvider<Computers> {
     @Override
     public List<Computers> select() {
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = "SELECT count(*) AS id FROM computers";
-        SQLQuery query = session.createSQLQuery(sqlQuery).addScalar("id", LongType.INSTANCE);
-        List<Long> result = query.list();
-        Long count = result.get(0);
+        Query query = session.createQuery("select count(*) from Cameras");
+        Long count = (Long)query.uniqueResult();
 
         List<Computers> listItems = new ArrayList();
 

@@ -22,13 +22,12 @@ public class ComputersController {
     private final Logger _log = LogManager.getLogger(this.getClass());
 
     @Autowired
-    IDataBaseProvider<Computers> computersDataBaseOperations = new ComputersDBO();
+    private IDataBaseProvider<Computers> computersDataBaseOperations = new ComputersDBO();
 
     @RequestMapping(value = "/welcome/computers",
             method = RequestMethod.GET)
     @ResponseBody
     public List<Computers> getComputers(){
-        List<Computers> selectSourceInfo = computersDataBaseOperations.select();
-        return selectSourceInfo;
+        return computersDataBaseOperations.select();
     }
 }
