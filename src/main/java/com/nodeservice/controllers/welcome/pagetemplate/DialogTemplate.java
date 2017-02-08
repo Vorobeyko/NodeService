@@ -36,6 +36,21 @@ public class DialogTemplate
     @ResponseBody
     public ModelAndView feedbackDialog(){
         return new ModelAndView("template\\feedback-dialog");
+    }
+
+    @RequestMapping(value = "/pagetemplate/computers-dialog",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView computersDialog(){
+        return new ModelAndView("template\\computers-dialog");
+
+    }
+
+    @RequestMapping(value = "/pagetemplate/change-computers-dialog",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView changeComputersDialog(){
+        return new ModelAndView("template\\change-computers-dialog");
 
     }
 }

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class Computers {
     @Id
     @Column(name = "ComputerID")
-    private Integer computerID;
+    private Integer computerID = 0;
     @Column(name = "ComputerIP")
     private String computerIP;
     @Column(name = "ComputerName")

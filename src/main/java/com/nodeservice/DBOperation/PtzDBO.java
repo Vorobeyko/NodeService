@@ -51,9 +51,20 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     public String update(Cameras cameras, String authorizedUser) {
         Session session = sessionFactory.getCurrentSession();
         try {
+            Query getSourceOwnBy = session.createQuery("select ownBy from Cameras where sourceIp = :sourceIp");
+            getSourceOwnBy.setParameter("sourceIp", cameras.getSourceIp());
+
+            Query getSourceDueData = session.createQuery("select dueData from Cameras where sourceIp = :sourceIp");
+            getSourceDueData.setParameter("sourceIp", cameras.getSourceIp());
+
+            Query getSourceState = session.createQuery("select state from Cameras where sourceIp = :sourceIp");
+            getSourceState.setParameter("sourceIp", cameras.getSourceIp());
+            String ownBy = (String) getSourceOwnBy.list().get(0);
+
             String hql = "update Cameras " +
                     "set sourceModel = :sourceModel, " +
                     "sourceDescription = :sourceDescription," +
+                    "audioCodec = :audioCodec," +
                     "comments = :comments," +
                     "ownBy = :ownBy," +
                     "dueData = :dueData," +
@@ -61,10 +72,20 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             Query query = session.createQuery(hql);
             query.setParameter("sourceModel", cameras.getSourceModel());
             query.setParameter("sourceDescription", cameras.getSourceDescription() != null ? cameras.getSourceDescription() : "");
+            query.setParameter("audioCodec", cameras.getAudioCodec());
             query.setParameter("comments", cameras.getComments() != null ? cameras.getComments() : "");
-            query.setParameter("ownBy", getStringOwnBy(cameras.getDueData(), authorizedUser));
-            query.setParameter("dueData", cameras.getDueData());
-            query.setParameter("state", getStringState(cameras.getDueData()));
+            // TODO: Сделать нормальной логику
+
+            if (ownBy == "" || ownBy.isEmpty()) {
+                query.setParameter("ownBy", getStringOwnBy(cameras.getDueData(), authorizedUser));
+                query.setParameter("dueData", cameras.getDueData());
+                query.setParameter("state", getStringState(cameras.getDueData()));
+            }else {
+                query.setParameter("ownBy", getSourceOwnBy.list().get(0));
+                query.setParameter("dueData", getSourceDueData.list().get(0));
+                query.setParameter("state", getSourceState.list().get(0));
+            }
+
             query.setParameter("sourceIp", cameras.getSourceIp());
 
             query.executeUpdate();
@@ -81,6 +102,11 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             e.printStackTrace();
             return "error";//ошибка, возвращаем error
         }
+    }
+
+    @Override
+    public String update(Cameras items) {
+        return null;
     }
 
     /**
@@ -121,6 +147,11 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
             e.printStackTrace();
             return "error";//ошибка, возвращаем error
         }
+    }
+
+    @Override
+    public String add(Cameras items) {
+        return null;
     }
 
     /**
@@ -194,27 +225,8 @@ public class PtzDBO implements IDataBaseProvider<Cameras> {
     @Override
     public List<Cameras> select() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select count(*) from Cameras");
-        Long count = (Long)query.uniqueResult();
-
-        List<Cameras> listItems = new ArrayList();
-
-        for (int i = 1; i <= count; i++) {
-            Cameras source = (Cameras) session.get(Cameras.class, i);
-            if(!source.getDeletedSource()) {
-                listItems.add(new Cameras(
-                                    source.getSourceIp(),
-                                    source.getSourceModel(),
-                                    source.getSourceDescription(),
-                                    source.getSourceType(),
-                                    source.getOwnBy(),
-                                    source.getComments(),
-                                    source.getDueData(),
-                                    source.getState()
-                        )
-                );
-            }
-        }
+        Query query = session.createQuery("from Cameras where deletedSource != 1");
+        List<Cameras> listItems = query.list();
         return listItems;
     }
 

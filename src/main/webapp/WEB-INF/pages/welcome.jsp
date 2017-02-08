@@ -34,9 +34,8 @@
   <ul class="nav nav-tabs header" role="tablist">
     <li role="presentation" class="active"><a href="#ptz" aria-controls="ptz"  role="tab" data-toggle="tab">Поворотные камеры</a></li>
     <li role="presentation"><a href="#stationary" aria-controls="stationary" role="tab" data-toggle="tab">Стационарные камеры</a></li>
-    <%--<li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab"--%>
-      <%--ng-click="clickOnTabComputers()">Компьютеры</a>--%>
-    <%--</li>--%>
+    <li role="presentation"><a href="#computers" aria-controls="computers" role="tab" data-toggle="tab">Компьютеры</a>
+    </li>
       <button type="submit"  class="btn btn-success btn-elvees" id="succes"
         ng-click="showDialogWithSourceInfo(null,'#add-sources-dialog')" data-toggle="tooltip" data-placement="bottom" title="Добавить новое устройство">
           <span class="glyphicon glyphicon-plus" style="margin-right: 5px;" aria-hidden="true"></span>Добавить камеру
@@ -70,6 +69,7 @@
         <th>IP</th>
         <th>Модель</th>
         <th>Описание</th>
+          <th>Аудио-кодек</th>
         <th>Забронировал</th>
         <th >Комментарий</th>
         <th>Срок</th>
@@ -84,6 +84,7 @@
             <td><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
             <td>{{sourceInfo.sourceModel}}</td>
             <td>{{sourceInfo.sourceDescription}}</td>
+            <td>{{sourceInfo.audioCodec}}</td>
             <td>{{sourceInfo.ownBy}}</td>
             <td>{{sourceInfo.comments}}</td>
             <td id="due-data">{{sourceInfo.dueData | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -94,17 +95,18 @@
   </div>
   <div role="tabpanel" class="tab-pane" id="stationary">
     <table class="table table-bordered sortIp" id="selectTr">
-      <thead>
-      <tr>
-        <th>IP</th>
-        <th>Модель</th>
-        <th>Описание</th>
-        <th>Забронировал</th>
-        <th>Комментарий</th>
-        <th>Срок</th>
-        <th>Состояние</th>
-      </tr>
-      </thead>
+        <thead>
+            <tr>
+                <th>IP</th>
+                <th>Модель</th>
+                <th>Описание</th>
+                <th>Аудио-кодек</th>
+                <th>Забронировал</th>
+                <th>Комментарий</th>
+                <th>Срок</th>
+                <th>Состояние</th>
+            </tr>
+        </thead>
       <tbody id="serviceNote" >
         <tr name="data"
           ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
@@ -113,6 +115,7 @@
             <td><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
             <td>{{sourceInfo.sourceModel}}</td>
             <td>{{sourceInfo.sourceDescription}}</td>
+            <td>{{sourceInfo.audioCodec}}</td>
             <td>{{sourceInfo.ownBy}}</td>
             <td>{{sourceInfo.comments}}</td>
             <td id="due-data">{{sourceInfo.dueData | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -121,6 +124,7 @@
       </tbody>
     </table>
   </div>
+
   <div role="tabpanel" class="tab-pane" id="computers">
     <table class="table table-bordered">
       <thead>
@@ -132,53 +136,48 @@
       </tr>
       </thead>
       <tbody>
-
         <!-- ng-click="clickOnRowComputersTable($index, $event, comps.computerName)" -->
         <tr name="data"
-          ng-repeat="comps in computers">
+          ng-repeat="comps in computers"
+            ng-click="showDialogWithComputerInfo(comps, '#change-computers-dialog')" click-note>
             <td class="tab-computers-td-ip">{{comps.computerIP}}</td>
-            <td id="test" class="tab-computers-td-name">
-              <span
-                ng-click="'computerNameId_{{$index}}' = true">{{comps.computerName}}</span>
-                <div class="input-group"
-                ng-show="'computerNameId_{{$index}}'"
-                ng-hide="!'computerNameId_{{$index}}'">
-                  <textarea class="tab-computers-input"></textarea>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"
-                    >X</button>
-                    <button class="btn btn-default" type="button">V</button>
-                  </span>
-                </div>
-            </td>
-            <td class="tab-computers-td-description"
-              ng-click="clickOnRowComputersTable2($index, $event, comps.computerDescription)">
-              <span>{{comps.computerDescription}}</span>
-              </td>
-              <td class="tab-computers-td-description">
-                <span>{{comps.owner}}</span>
-                </td>
+            <td id="test" class="tab-computers-td-name">{{comps.computerName}}</td>
+            <td class="tab-computers-td-description">{{comps.computerDescription}}</td>
+            <td class="tab-computers-td-description">{{comps.owner}}</td>
         </tr>
       </tbody>
     </table>
       <button type="sudmit" class="btn btn-warning btn-group-sm btn-add-computers-node"
-        ng-click="addComputers()">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true">
+              ng-click="showComputersDialog('#computers-dialog')">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"/>
       </button>
   </div>
 </div>
 
-<!-- Add Sources Dialog Template -->
-<div class="modal fade " id="add-sources-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog" add-sources-dialog></div>
-</div>
-<!-- End Template -->
+    <!-- Add Sources Dialog Template -->
+    <div class="modal fade " id="add-sources-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog" add-sources-dialog></div>
+    </div>
+    <!-- End Template -->
 
-<!-- Update Sources Dialog Template -->
-<div class="modal fade " id="change-sources-dialog" tabindex="-1" role="dialog">
-    <div class="modal-dialog" change-sources-dialog></div>
-</div>
-<!-- End Template -->
+    <!-- Update Sources Dialog Template -->
+    <div class="modal fade " id="change-sources-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog" change-sources-dialog></div>
+    </div>
+    <!-- End Template -->
+
+
+  <!-- Update Sources Dialog Template -->
+  <div class="modal fade " id="computers-dialog" tabindex="-1" role="dialog">
+      <div class="modal-dialog" computers-dialog></div>
+  </div>
+  <!-- End Template -->
+
+  <!-- Update Sources Dialog Template -->
+  <div class="modal fade " id="change-computers-dialog" tabindex="-1" role="dialog">
+      <div class="modal-dialog" change-computers-dialog></div>
+  </div>
+  <!-- End Template -->
 
 <div class="modal fade " id="historyModal" tabindex="-1" role="dialog" aria-labelledby="checkDeleted">
     <div class="modal-dialog history" style="min-width: 1260px!important;max-width: 1500px!important;">

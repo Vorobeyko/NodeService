@@ -44,11 +44,7 @@ public class SourcesController {
                 operationResponse(addSource, response);
                 break;
             case "update-source":
-                String updateSource;
-                if (cameras.getOwnBy() == null || cameras.getOwnBy().equals(""))
-                    updateSource = dataBaseProvider.update(cameras, username);
-                else //TODO: Убрать возможность сброса бронирования обновлением
-                    updateSource = dataBaseProvider.update(cameras, "");
+                String updateSource = dataBaseProvider.update(cameras, username);
                 operationResponse(updateSource, response);
                 break;
             case "remove-from-reservation":

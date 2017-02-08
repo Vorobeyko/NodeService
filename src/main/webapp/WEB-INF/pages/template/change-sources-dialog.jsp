@@ -28,15 +28,19 @@
               ng-model="sources.sourceDescription">
         </div>
         <div class="input-group">
+            <span class="input-group-addon">Аудио-кодек</span>
+            <input type="text" class="form-control"
+                   ng-model="sources.audioCodec">
+        </div>
+        <div class="input-group">
             <span class="input-group-addon">Комментарий</span>
             <input type="text" class="form-control"
               ng-model="sources.comments">
         </div>
-        <div class="input-group date" ng-class="(sources.dueData == undefined
-                || sources.dueData == '') ? 'has-error has-feedback' : 'has-success  has-feedback'">
+        <div class="input-group date">
             <span class="input-group-addon">Срок</span>
             <input type="datetime" class="form-control" id="datetimepicker" name="nameDueData"
-              ng-model="sources.dueData" required>
+              ng-model="sources.dueData">
             <span class="glyphicon form-control-feedback glyphicon-remove" style="display:none" aria-hidden="true"></span>
         </div>
 
@@ -44,9 +48,7 @@
         <div class="input-group">
             <button type="submit" class="btn btn-info" id="Update" name="Update" value="Update"
               ng-disabled="sourceForm.nameSourceIP.$invalid
-                || sourceForm.nameSourceModel.$invalid
-                || sources.dueData == undefined
-                || sources.dueData == ''"
+                || sourceForm.nameSourceModel.$invalid"
               ng-click="updateSource()"
                     data-toggle="tooltip" data-placement="top" title="Забронировать устройство">
                 <span class="glyphicon glyphicon-refresh" style="margin-right: 5px;" aria-hidden="true"></span>Забронировать

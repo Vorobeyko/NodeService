@@ -5,9 +5,12 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 	$scope.updateTable = function(){
         angular.element('#shows').addClass('glyphicon-refresh-animate');
 		$http.get("/welcome/sources/get-note").then(function(response){
-            angular.element('#shows').removeClass('glyphicon-refresh-animate');
 			$scope.sourcesInfo = response.data;
 		});
+        $http.get("/welcome/computers").then(function(response){
+            $scope.computers = response.data;
+        });
+        angular.element('#shows').removeClass('glyphicon-refresh-animate');
 	};
 
 	angular.element(document).ready(function () {
@@ -39,9 +42,9 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 	};
 
 	$scope.closeHistoryModal = function(){
-		$scope.data.singleSelect = "";
-        $scope.sourceHistory = null;
-		$('#historyModal').modal('hide')
+        $('#historyModal').modal('hide');
+		if ($scope.data.singleSelect != undefined) $scope.data.singleSelect = undefined;
+        if ($scope.sourceHistory != null || $scope.sourceHistory != undefined) $scope.sourceHistory != null;
 	};
 	/*
 	* Показать диалоговое окно
@@ -52,11 +55,26 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 					sourceIP: source_info.sourceIp,
 					sourceModel: source_info.sourceModel,
 					sourceDescription: source_info.sourceDescription,
+                	audioCodec: source_info.audioCodec,
 					comments: source_info.comments,
-					dueData: $filter('date')(source_info.dueData, 'yyyy-MM-dd HH:mm:ss', '+0300'),
+					dueData: $filter('date')(source_info.dueData, 'yyyy-MM-dd HH:mm:ss', '+0300')
 			};
 		}
 		datetime();
+		$(viewId).modal({
+			backdrop: 'static',
+			keyboard: false
+		})
+	};
+
+	$scope.showDialogWithComputerInfo = function(computer_info, viewId){
+		$scope.ch_computer = {
+            computerIP: computer_info.computerIP,
+            computerName: computer_info.computerName,
+            computerDescription: computer_info.computerDescription,
+            owner: computer_info.owner
+		};
+
 		$(viewId).modal({
 			backdrop: 'static',
 			keyboard: false
@@ -83,32 +101,11 @@ welcomePage.controller('WelcomePageBody', ['serv', '$scope', '$window', '$cookie
 			});
 	}
 
-	$scope.clickOnTabComputers = function(){
-		$http.get("/welcome/computers").then(function(response){
-			$scope.computers = response.data;
-		});
-	};
-
-	$scope.addComputers = function(){
-		var newRow = {
-			computerIP: "IP",
-			computerName: "Имя",
-			computerDescription: "Описание",
-			owner: "Владелец"
-		};
-
-		$scope.computers.push(newRow)
-	};
-
-	$scope.clickOnRowComputersTable = function($index, event, n){
-		console.log(n);
-		console.log($index);
-		console.log(event.target.id);
-	};
-	$scope.clickOnRowComputersTable2 = function($index, $event, n){
-		console.log(n);
-		console.log($index);
-		console.log($event.target);
+	$scope.showComputersDialog = function(viewId){
+        $(viewId).modal({
+            backdrop: 'static',
+            keyboard: false
+        });
 	};
 /*
 ------------------------------
@@ -129,15 +126,22 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
         $scope.closeCheckDeleteSource('#checkDeleteSource');
         $scope.closeSourceInfoModal('#change-sources-dialog');
  	};
+ 	$scope.addComputer = function(){POSTRequest('/welcome/computers/add-computer', getComputersForm($scope, $scope.computer), $http)};
+	$scope.updateComputer = function () {POSTRequest('/welcome/computers/update-computer', getComputersForm($scope, $scope.ch_computer), $http)};
 
  	$scope.removeFromReservation = function(){ POSTRequest('/welcome/sources/remove-from-reservation/', getFormInput($scope, $scope.sources), $http)};
-    $scope.sendFeedbackMessage = function () {
-    	console.log($scope.feedbackMessage);
-        var feedback = {
-            message:  $scope.feedbackMessage
+
+    $scope.sendFeedbackMessage = function () {var feedback = {message:  $scope.feedbackMessage}; POSTRequest('/welcome/feedback-message', feedback, $http)};
+
+    function getComputersForm($scope, args){
+        var computerInfo = {
+            computerIP: args.computerIP,
+            computerName: args.computerName,
+            computerDescription: args.computerDescription,
+            owner: args.owner
         };
-    	POSTRequest('/welcome/feedback-message', feedback, $http)
-    };
+        return computerInfo;
+	}
 
 
 	function getFormInput($scope, args){
@@ -145,6 +149,7 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
 			sourceIp: args.sourceIP,
 			sourceModel: args.sourceModel,
 			sourceDescription: args.sourceDescription,
+            audioCodec: args.audioCodec,
 			comments: args.comments
 		};
 		if ($scope.sourceType == "PTZ"){
@@ -182,7 +187,12 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
 		if ($scope.addSource.sourceIP != "") $scope.addSource.sourceIP = "";
 		if ($scope.addSource.sourceModel != "") $scope.addSource.sourceModel = "";
 		if ($scope.addSource.sourceDescription != "") $scope.addSource.sourceDescription = "";
+        if ($scope.addSource.audioCodec != "") $scope.addSource.audioCodec = "";
 		if ($scope.addSource.comments != "") $scope.addSource.comments = "";
+        if ($scope.computer.computerIP != "") $scope.computer.computerIP = "";
+        if ($scope.computer.computerName != "") $scope.computer.computerName = "";
+        if ($scope.computer.computerDescription != "") $scope.computer.computerDescription = "";
+        if ($scope.computer.owner != "") $scope.computer.owner = "";
 		if ($scope.addSourceError != "") $scope.addSourceError = "";
         if ($scope.addSourceSuccess != "") $scope.addSourceSuccess = "";
 	};
@@ -194,6 +204,15 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
             keyboard: false
         })
     };
+
+    $scope.showCheckDeleteComputer = function(){
+		/*Показать диалоговое окно подтверждения удаления*/
+        $('#checkDeleteComputer').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    };
+
 
     $scope.closeCheckDeleteSource = function (viewId){
         $(viewId).modal('hide');

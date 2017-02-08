@@ -52,6 +52,8 @@ public class Cameras implements Serializable{
     private String sourceModel;
     @Column(name = "SourceDescription")
     private String sourceDescription;
+    @Column(name = "AudioCodec")
+    private String audioCodec;
     @Column(name = "SourceType")
     private String sourceType;
     @Column(name = "OwnBy")
@@ -171,5 +173,13 @@ public class Cameras implements Serializable{
 
     public void setDeletedSource(Boolean deletedSource) {
         this.deletedSource = deletedSource;
+    }
+
+    public String getAudioCodec() {
+        return audioCodec;
+    }
+
+    public void setAudioCodec(String audioCodec) {
+        this.audioCodec = audioCodec;
     }
 }

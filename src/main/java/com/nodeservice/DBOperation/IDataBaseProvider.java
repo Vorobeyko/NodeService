@@ -10,7 +10,11 @@ public interface IDataBaseProvider<T> {
 
     String update(T cameras, String authorizedUser);
 
+    String update(T items);
+
     String add(T cameras, String authorizedUser);
+
+    String add(T items);
 
     void removeFromReservation(T cameras, String username) throws NamingException;
 

@@ -30,6 +30,11 @@
           <input type="text" class="form-control"
             ng-model="addSource.sourceDescription">
       </div>
+        <div class="input-group">
+            <span class="input-group-addon">Аудио-кодек</span>
+            <input type="text" class="form-control"
+                   ng-model="addSource.audioCodec">
+        </div>
       <div class="input-group">
           <span class="input-group-addon">Комментарий</span>
           <input type="text" class="form-control"

@@ -94,8 +94,10 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         if (username != null){
             Map<String,String> currentUser = new HashMap<>();
-            if (username.equals("admin")) currentUser.put("currentUser","Администратор");
-            else currentUser.put("currentUser",ad.getNameUser(username));
+            if (username.equals("admin"))
+                currentUser.put("currentUser","Администратор");
+            else
+                currentUser.put("currentUser",ad.getNameUser(username));
             modelAndView.addObject("user",currentUser);
             modelAndView.setViewName("welcome");
             return modelAndView;

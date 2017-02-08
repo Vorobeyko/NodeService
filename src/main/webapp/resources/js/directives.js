@@ -24,4 +24,15 @@ welcomePage.directive('clickNote', function(){
     return{
         templateUrl: 'pagetemplate/feedback-dialog.html'
     }
+})
+.directive('computersDialog', function(){
+	return{
+		templateUrl: 'pagetemplate/computers-dialog.html'
+	}
+})
+.directive('changeComputersDialog', function(){
+	return{
+		templateUrl: 'pagetemplate/change-computers-dialog.html'
+	}
 });
+
