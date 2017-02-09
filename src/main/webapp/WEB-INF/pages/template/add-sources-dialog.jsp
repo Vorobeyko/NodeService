@@ -31,7 +31,7 @@
             ng-model="addSource.sourceDescription">
       </div>
         <div class="input-group">
-            <span class="input-group-addon">Аудио-кодек</span>
+            <span class="input-group-addon">Аудио\Видео-кодеки</span>
             <input type="text" class="form-control"
                    ng-model="addSource.audioCodec">
         </div>

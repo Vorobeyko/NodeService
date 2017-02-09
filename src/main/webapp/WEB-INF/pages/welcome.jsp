@@ -69,7 +69,7 @@
         <th>IP</th>
         <th>Модель</th>
         <th>Описание</th>
-          <th>Аудио-кодек</th>
+          <th>Аудио\Видео-кодеки</th>
         <th>Забронировал</th>
         <th >Комментарий</th>
         <th>Срок</th>
@@ -79,7 +79,7 @@
       <tbody id="serviceNote" >
         <tr name="data"
           ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
-          ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'}"
+          ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'} | orderBy:'sourceIp'"
           ng-click="showDialogWithSourceInfo(sourceInfo, '#change-sources-dialog')" click-note >
             <td><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
             <td>{{sourceInfo.sourceModel}}</td>
@@ -100,7 +100,7 @@
                 <th>IP</th>
                 <th>Модель</th>
                 <th>Описание</th>
-                <th>Аудио-кодек</th>
+                <th>Аудио\Видео-кодеки</th>
                 <th>Забронировал</th>
                 <th>Комментарий</th>
                 <th>Срок</th>
@@ -110,7 +110,7 @@
       <tbody id="serviceNote" >
         <tr name="data"
           ng-class="sourceInfo.state === 'busy' ? 'busy-tr' : 'free-tr'"
-          ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'Stationary'}"
+          ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'Stationary'} | orderBy:'sourceIp' "
           ng-click="showDialogWithSourceInfo(sourceInfo, '#change-sources-dialog')" click-note>
             <td><a href="http://{{sourceInfo.sourceIp}}">{{sourceInfo.sourceIp}}</a></td>
             <td>{{sourceInfo.sourceModel}}</td>
@@ -138,7 +138,7 @@
       <tbody>
         <!-- ng-click="clickOnRowComputersTable($index, $event, comps.computerName)" -->
         <tr name="data"
-          ng-repeat="comps in computers"
+          ng-repeat="comps in computers | orderBy:'computerIP'"
             ng-click="showDialogWithComputerInfo(comps, '#change-computers-dialog')" click-note>
             <td class="tab-computers-td-ip">{{comps.computerIP}}</td>
             <td id="test" class="tab-computers-td-name">{{comps.computerName}}</td>
