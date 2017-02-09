@@ -45,7 +45,7 @@ public class ComputersController {
                 computersDataBaseOperations.delete(computers);
                 break;
             default:
-                _log.error("Запрашиваемая операция не распозвнана");
+                _log.error("Запрашиваемая операция не распознана");
         }
     }
 }

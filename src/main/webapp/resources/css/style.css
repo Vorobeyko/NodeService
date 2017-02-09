@@ -41,7 +41,7 @@ body.faq {
   box-shadow: 0 0px 7px rgb(119, 111, 111);
 }*/
 .current-user { font-family: "Ubuntu" }
-.table { margin-bottom: 65px!important }
+.table { margin-bottom: 150px!important }
 table { min-width: 100% }
 table tr { cursor: pointer }
 table thead tr{ cursor: inherit }
@@ -142,7 +142,7 @@ transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 .btn-add-computers-node{
   float: left;
   position: relative;
-  margin: -60px 5px 5px 5px;
+  margin: -145px 5px 5px 5px;
 }
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
