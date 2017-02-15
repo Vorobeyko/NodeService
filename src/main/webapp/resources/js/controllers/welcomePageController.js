@@ -128,7 +128,11 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
  	};
  	$scope.addComputer = function(){POSTRequest('/welcome/computers/add-computer', getComputersForm($scope, $scope.computer), $http)};
 	$scope.updateComputer = function () {POSTRequest('/welcome/computers/update-computer', getComputersForm($scope, $scope.ch_computer), $http)};
-
+	$scope.deleteComputer = function() {
+        POSTRequest('/welcome/computers/delete-computer', getComputersForm($scope, $scope.ch_computer), $http);
+        $scope.closeCheckDeleteSource('#checkDeleteComputer');
+        $scope.closeSourceInfoModal('#change-computers-dialog');
+	};
  	$scope.removeFromReservation = function(){ POSTRequest('/welcome/sources/remove-from-reservation/', getFormInput($scope, $scope.sources), $http)};
 
     $scope.sendFeedbackMessage = function () {var feedback = {message:  $scope.feedbackMessage}; POSTRequest('/welcome/feedback-message', feedback, $http)};
@@ -197,9 +201,9 @@ welcomePage.controller('SourceOperations',['$document', '$scope', '$http', funct
         if ($scope.addSourceSuccess != "") $scope.addSourceSuccess = "";
 	};
 
-    $scope.showCheckDeleteSource = function(){
+    $scope.showCheckDeleteSource = function(viewId){
 		/*Показать диалоговое окно подтверждения удаления*/
-        $('#checkDeleteSource').modal({
+        $(viewId/*'#checkDeleteSource'*/).modal({
             backdrop: 'static',
             keyboard: false
         })

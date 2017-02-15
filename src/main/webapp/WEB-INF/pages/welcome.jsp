@@ -187,10 +187,10 @@
             <h4 class="modal-title" id="gridSystemModalLabel">История для выбранного источника:
                 <select class="form-control form-control-override" ng-model="data.singleSelect" ng-change="showHistoryForSource(data.singleSelect)">
                     <optgroup label="Поворотные видеокамеры">
-                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'}" >{{sourceInfo.sourceIp}}</option>
+                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'PTZ'} | orderBy:'sourceIp'" >{{sourceInfo.sourceIp}}</option>
                     </optgroup>
                     <optgroup label="Стационарные видеокамеры">
-                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'Stationary'}" >{{sourceInfo.sourceIp}}</option>
+                        <option ng-repeat="sourceInfo in sourcesInfo | filter: { sourceType: 'Stationary'} | orderBy:'sourceIp'" >{{sourceInfo.sourceIp}}</option>
                     </optgroup>
                 </select>
             </h4>
