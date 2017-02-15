@@ -99,28 +99,18 @@ public class ComputersDBO implements IDataBaseProvider<Computers> {
 
     @Override
     public void delete(Computers cameras) {
-
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("update Computers set deletedComputer = :deletedComputer where computerIp =:computerIp");
+        query.setParameter("deletedComputer",true);
+        query.setParameter("computerIp", cameras.getComputerIP());
+        query.executeUpdate();
     }
 
     @Override
     public List<Computers> select() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select count(*) from Computers");
-        Long count = (Long)query.uniqueResult();
-
-        List<Computers> listItems = new ArrayList();
-
-        for (int i = 1; i <= count; i++) {
-            Computers source = (Computers) session.get(Computers.class, i);
-
-            listItems.add(new Computers(
-                    source.getComputerIP(),
-                    source.getComputerName(),
-                    source.getComputerDescription(),
-                    source.getOwner()
-                    )
-            );
-        }
+        Query query = session.createQuery("from Computers where deletedComputer != 1");
+        List<Computers> listItems = query.list();
         return listItems;
     }
 

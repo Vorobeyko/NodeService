@@ -66,7 +66,7 @@
               ng-disabled="sourceForm.nameSourceIP.$invalid
                 || sourceForm.nameSourceModel.$invalid"
               ng-click="(sourceForm.nameSourceIP.$invalid || sourceForm.nameSourceModel.$invalid)
-                ? null : showCheckDeleteSource()"
+                ? null : showCheckDeleteSource('#checkDeleteSource')"
                   data-toggle="tooltip" data-placement="top" title="Удалить устройство">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </div>

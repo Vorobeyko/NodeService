@@ -41,6 +41,13 @@
                     data-toggle="tooltip" data-placement="top" title="Обновить информацию о компьютере">
                 <span class="glyphicon glyphicon-refresh" style="margin-right: 5px;" aria-hidden="true"></span>Изменить
             </button>
+            <div  class="btn btn-danger show-modal" id="delete"
+                  ng-disabled="sourceForm.nameSourceIP.$invalid
+                || sourceForm.nameSourceModel.$invalid"
+                  ng-click="showCheckDeleteSource('#checkDeleteComputer')"
+                  data-toggle="tooltip" data-placement="top" title="Удалить компьютер">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </div>
             <div id="close" class="btn btn-default" style="margin-left: 5px;" ng-click="closeSourceInfoModal('#change-computers-dialog')"
                  data-toggle="tooltip" data-placement="top" title="Закрыть модальное окно">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -51,5 +58,23 @@
         </div>
         <p id="addSourceError">{{addSourceError}}</p>
         <p id="addSourceSuccess">{{addSourceSuccess}}</p>
+        <!-- ------ Модальное окно для подтверждения удаления источника ------  -->
+        <div class="modal fade" id="checkDeleteComputer" tabindex="-1" role="dialog">
+            <div class="modal-dialog checkDeleteSource">
+                <div class="modal-content" style="width: 180px;">
+                    <div class="checkContent">
+                        <div>
+                            <p style="text-align: center">Ты уверен, что хочешь удалить устройство?</p>
+                        </div>
+                        <button type="submit" class="btn btn-danger" name="delete" ng-click="deleteComputer()">
+                            <span class="glyphicon glyphicon-trash" style="margin-right: 5px;" aria-hidden="true"></span>Да
+                        </button>
+                        <div id="close" class="btn btn-default" onclick="$('#checkDeleteComputer').modal('hide')">
+                            <span class="glyphicon glyphicon-remove" style="margin-right: 5px;" aria-hidden="true"></span>Нет
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>

@@ -22,6 +22,8 @@ public class Computers {
     private String computerDescription;
     @Column(name = "Owner")
     private String owner;
+    @Column(name = "DeletedComputer")
+    private Boolean deletedComputer = false;
 
     public Computers (String compIP, String compName, String compDescription, String owner){
         this.computerIP = compIP;
@@ -70,5 +72,13 @@ public class Computers {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public Boolean getDeletedComputer() {
+        return deletedComputer;
+    }
+
+    public void setDeletedComputer(Boolean deletedComputer) {
+        this.deletedComputer = deletedComputer;
     }
 }
